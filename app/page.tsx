@@ -1,8 +1,11 @@
 'use client';
+import React from 'react';
+import Button from '@/components/Button';
+
 export default function Home() {
   return (
     <div>
-      <button
+      <Button
         onClick={() => {
           fetch('/api/new', { method: 'POST' })
             .then((res) => res.json())
@@ -10,7 +13,7 @@ export default function Home() {
         }}
       >
         글쓰기
-      </button>
+      </Button>
     </div>
   );
 }
