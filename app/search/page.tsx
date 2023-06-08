@@ -1,9 +1,5 @@
 import React from 'react';
-
-interface SearchPropsType {
-  params: Record<string, string>;
-  searchParams: Record<string, string>;
-}
+import { SearchPropsType } from '@/types/interface';
 
 const Search = (props: SearchPropsType) => {
   console.log(props);
