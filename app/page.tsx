@@ -14,16 +14,6 @@ export default function Home() {
       >
         글쓰기
       </Button>
-      <Button
-        onClick={() => {
-          console.log(process.env.NEXT_PUBLIC_API_KEY);
-          console.log(process.env.NEXT_PUBLIC_MONGODB_URL);
-          console.log(process.env.NEXT_PUBLIC_GITHUB_CLIENTID);
-          console.log(process.env.NEXT_PUBLIC_GITHUB_CLIENTSECRET);
-        }}
-      >
-        콘솔찍기
-      </Button>
     </div>
   );
 }
