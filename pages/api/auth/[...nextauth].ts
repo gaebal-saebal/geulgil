@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import { connectDB } from '@/util/database';
 import NextAuth from 'next-auth';
@@ -67,7 +66,7 @@ export const authOptions = {
     },
   },
 
-  secret: process.env.NEXT_PUBLIC_PASSWORD,
+  secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
   adapter: MongoDBAdapter(connectDB, { databaseName: 'auth' }),
 };
 export default NextAuth(authOptions);
