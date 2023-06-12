@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Button from '@/components/Button';
+import BookListOnMain from '@/components/BookListOnMain';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       >
         글쓰기
       </Button>
+      <BookListOnMain />
     </div>
   );
 }

@@ -7,3 +7,10 @@ export interface ButtonPropsType {
   onClick?(): void;
   children: any;
 }
+
+export interface BookListOnMainType {
+  coverLargeUrl: string;
+  title: string;
+  author: string;
+  isbn: string;
+}
