@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         content: request.content,
         date: dateResult,
         likes: 0,
+        isbn: request.id,
       };
 
       reviewData.name = session.user.name;

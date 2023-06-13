@@ -52,7 +52,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
             onClick={() => {
               fetch('/api/reviews/createReview', {
                 method: 'POST',
-                body: JSON.stringify({ rate, content }),
+                body: JSON.stringify({ rate, content, id }),
               })
                 .then((res) => res.json())
                 .then((data) => console.log(data));

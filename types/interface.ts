@@ -27,4 +27,5 @@ export interface ReviewDataType {
   date: string;
   likes: number;
   name?: string;
+  isbn: string;
 }
