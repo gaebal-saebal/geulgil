@@ -13,13 +13,11 @@ const BookListOnMain = () => {
       });
   }, []);
 
-  console.log(lists);
-
   return (
     <div>
       <strong>베스트셀러</strong>
       <div className='max-w-screen-2xl'>
-        <ul className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+        <ul className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
           {lists.map((list: BookListOnMainType, i) => {
             return (
               <li key={i} className='flex flex-col p-6'>
