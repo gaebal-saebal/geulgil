@@ -9,8 +9,9 @@ export interface ButtonPropsType {
 }
 
 export interface BookListOnMainType {
-  coverLargeUrl: string;
-  title: string;
-  author: string;
-  isbn: string;
+  [key: string]: string;
+}
+
+export interface BookDetailType {
+  [key: string]: string;
 }
