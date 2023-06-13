@@ -2,12 +2,12 @@
 
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import { connectDB } from '@/util/database';
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GithubProvider({
       clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENTID,
