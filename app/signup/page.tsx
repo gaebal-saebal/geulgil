@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SignUp = () => {
+const Signup = () => {
   return (
     <div>
       <form method='POST' action='/api/auth/signUp'>
@@ -13,4 +13,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;
