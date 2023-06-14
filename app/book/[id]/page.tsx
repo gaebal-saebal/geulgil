@@ -1,9 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { BookDetailType } from '@/types/interface';
+import { BookDetailType, ReviewsType } from '@/types/interface';
 
 const Book = (props: { params: { id: string }; searchParams: {} }) => {
   const [lists, setLists] = useState<BookDetailType[]>([]);
+  const [reviews, setReviews] = useState<ReviewsType[]>([]);
   const [content, setContent] = useState('');
   const [rate, setRate] = useState('1');
   const id = props.params.id;
@@ -13,6 +14,14 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
       .then((res) => res.json())
       .then((data) => {
         setLists(data.item);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/books/getReviews?isbn=${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setReviews(data);
       });
   }, []);
 
@@ -60,6 +69,18 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
           >
             리뷰 올리기
           </button>
+        </div>
+        <div>
+          {reviews.map((review, i) => {
+            return (
+              <div key={i}>
+                <span>{review.content}</span>
+                <span>{review.name}</span>
+                <span>{review.likes}</span>
+                <span>{review.date}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     );

@@ -29,3 +29,10 @@ export interface ReviewDataType {
   name?: string;
   isbn: string;
 }
+
+export interface ReviewsType {
+  content: string;
+  date: string;
+  likes: number;
+  name: string;
+}
