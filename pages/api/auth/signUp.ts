@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       let db = (await connectDB).db('auth');
       await db.collection('users').insertOne(request);
 
-      res.status(200).json('성공임');
+      return res.status(200).json('성공');
     }
   }
 }

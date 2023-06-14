@@ -1,10 +1,13 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, type: string): void => {
     if (type === 'name') {
@@ -22,7 +25,10 @@ const Signup = () => {
       body: JSON.stringify({ name, email, password }),
     })
       .then((res) => {
-        res.json();
+        if (res.status === 200) {
+          router.push('/');
+        }
+        return res.json();
       })
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
