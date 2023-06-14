@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { sessionState } from '@/store/store';
-import { signOut } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 
 const NavBar = ({ session }: any) => {
   const { name, setName, setEmail } = sessionState();
@@ -20,12 +20,12 @@ const NavBar = ({ session }: any) => {
       {session === null ? (
         <>
           <Link href='/signup'>회원가입</Link>
-          <Link href='/login'>로그인</Link>
+          <button onClick={() => signIn(undefined, { callbackUrl: '/' })}>로그인</button>
         </>
       ) : (
         <>
           {name}
-          <span onClick={() => signOut()}>로그아웃</span>
+          <button onClick={() => signOut({ callbackUrl: '/' })}>로그아웃</button>
         </>
       )}
     </div>
