@@ -9,6 +9,14 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
   const [rate, setRate] = useState('1');
   const id = props.params.id;
 
+  const getReviews = () => {
+    fetch(`/api/books/getReviews?isbn=${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setReviews(data);
+      });
+  };
+
   useEffect(() => {
     fetch(`/api/books/getBookDetails?isbn=${id}`)
       .then((res) => res.json())
@@ -18,11 +26,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/books/getReviews?isbn=${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setReviews(data);
-      });
+    getReviews();
   }, []);
 
   if (lists.length > 0) {
@@ -58,13 +62,17 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
           />
           <div>좋아요</div>
           <button
-            onClick={() => {
-              fetch('/api/reviews/createReview', {
+            onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
+              await fetch('/api/reviews/createReview', {
                 method: 'POST',
                 body: JSON.stringify({ rate, content, id }),
               })
                 .then((res) => res.json())
                 .then((data) => console.log(data));
+              getReviews();
+              //@ts-ignore
+              e.target.parentElement.children[1].value = '';
+              setContent('');
             }}
           >
             리뷰 올리기
@@ -74,10 +82,12 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
           {reviews.map((review, i) => {
             return (
               <div key={i}>
+                <span>★:{review.rate}</span>
                 <span>{review.content}</span>
                 <span>{review.name}</span>
-                <span>{review.likes}</span>
                 <span>{review.date}</span>
+                <span>{review.likes}</span>
+                👍
               </div>
             );
           })}
