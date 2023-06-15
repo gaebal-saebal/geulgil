@@ -1,61 +1,59 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { BookDetailType, ReviewsType } from '@/types/interface';
+import { sessionState } from '@/store/store';
+import { signIn } from 'next-auth/react';
 
 const Book = (props: { params: { id: string }; searchParams: {} }) => {
   const [lists, setLists] = useState<BookDetailType[]>([]);
   const [reviews, setReviews] = useState<ReviewsType[]>([]);
   const [content, setContent] = useState('');
   const [rate, setRate] = useState('1');
-  const id = props.params.id;
+  const isbn = props.params.id;
+
+  const { id } = sessionState();
+
+  const GET_REVIEW_URL = `/api/books/getReviews?isbn=${isbn}`;
+  const GET_BOOK_INFO_URL = `/api/books/getBookDetails?isbn=${isbn}`;
+  const POST_REVIEW_LIKE_URL = `/api/reviews/likeReview`;
 
   const getReviews = () => {
-    fetch(`/api/books/getReviews?isbn=${id}`)
+    fetch(GET_REVIEW_URL)
       .then((res) => res.json())
       .then((data) => {
         setReviews(data);
       });
   };
 
-  const handleLikes = (e: React.MouseEvent<HTMLButtonElement>) => {
-    /*TODO:
-      0. 클릭했을때 로그인 되어 있지 않으면 로그인 페이지로 이동
-      1. 로그인 상태때 클릭하면 서버에 fetch 요청 보내기(보낼때 body에 review의 id 같이 보내기)
-
-      2. 서버는 현재 로그인 하고 있는 사람의 id를 가져옴
-      
-      3-1. 2에서 받은 userId가 이미 book-likes의 likers 배열에 담겨있으면
-      3-2. book-likes 객체의 likers 배열에서 해당 userId를 삭제합니다.
-
-      4-1. 2에서 받은 userId가 book-likes의 likers 배열에 없으면
-      4-2. book-likes 객체의 likers 배열에 userId를 추가합니다.
-        {_id: 자동생성될거,
-         reviewId: 해당 리뷰의 아이디
-         likers: [...likers, 새로좋아요누른사람아이디]
-        }
-        이 과정에서 만약 객체가 없었다면 자동으로 객체가 생성됩니다.
-      
-      5. book-review-좋아요를 누른 '리뷰id'에 일치하는 리뷰에 접근합니다.
-      6. 문서의 likes 값을 3의 likers.length로 수정(좋아요든 취소든 알아서 적용될거)
-
-      7. 클라이언트에 response를 likers.length를 보냅니다.
-      ---
-
-      8. 클라이언트에서는 화면에 렌더링된 좋아요를 받은 response(likers.length)로 바꿉니다.
-
-      + 좋아요를 눌렀다면 엄지손가락에 색깔이 채워진다거나 하는 식으로 변경합니다.
-    */
-  };
-
-  useEffect(() => {
-    fetch(`/api/books/getBookDetails?isbn=${id}`)
+  const getBookDetails = () => {
+    fetch(GET_BOOK_INFO_URL)
       .then((res) => res.json())
       .then((data) => {
         setLists(data.item);
       });
-  }, []);
+  };
+
+  const handleLikes = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (id !== '') {
+      const target = e.target as HTMLButtonElement;
+      // 로그인 상태때 클릭하면 서버에 fetch 요청 보내기(보낼때 body에 reviewId, userId 같이 보내기)
+      fetch(POST_REVIEW_LIKE_URL, {
+        method: 'POST',
+        body: JSON.stringify({ userId: id, reviewId: target.name }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          //클라이언트에서는 화면에 렌더링된 좋아요를 받은 response(likers.length)로 바꿉니다.
+          //@ts-ignore
+          e.target.parentElement.children[4].childNodes[0].data = data;
+        });
+    }
+    // 클릭했을때 로그인 되어 있지 않으면 로그인 페이지로 이동
+    else signIn();
+  };
 
   useEffect(() => {
+    getBookDetails();
     getReviews();
   }, []);
 
@@ -117,7 +115,9 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
                 <span>{review.name}</span>
                 <span>{review.date}</span>
                 <span>{review.likes}</span>
-                <button onClick={(e) => handleLikes(e)}>👍</button>
+                <button name={review._id} onClick={(e) => handleLikes(e)}>
+                  👍
+                </button>
               </div>
             );
           })}
