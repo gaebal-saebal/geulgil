@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BookDetailType, ReviewsType } from '@/types/interface';
 import { sessionState } from '@/store/store';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 const Book = (props: { params: { id: string }; searchParams: {} }) => {
   const [lists, setLists] = useState<BookDetailType[]>([]);
@@ -34,7 +35,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
   };
 
   const handleLikes = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (id !== '') {
+    if (id !== '' || id !== null) {
       const target = e.target as HTMLButtonElement;
       // 로그인 상태때 클릭하면 서버에 fetch 요청 보내기(보낼때 body에 reviewId, userId 같이 보내기)
       fetch(POST_REVIEW_LIKE_URL, {
@@ -112,7 +113,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
               <div key={i}>
                 <span>★:{review.rate}</span>
                 <span>{review.content}</span>
-                <span>{review.name}</span>
+                <Link href={`/user/${id}`}>{review.name}</Link>
                 <span>{review.date}</span>
                 <span>{review.likes}</span>
                 <button name={review._id} onClick={(e) => handleLikes(e)}>
