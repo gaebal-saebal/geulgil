@@ -93,7 +93,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
             onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
               await fetch('/api/reviews/createReview', {
                 method: 'POST',
-                body: JSON.stringify({ rate, content, id }),
+                body: JSON.stringify({ rate, content, isbn }),
               })
                 .then((res) => res.json())
                 .then((data) => console.log(data));
