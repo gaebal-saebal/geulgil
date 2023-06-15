@@ -5,10 +5,19 @@ import { sessionState } from '@/store/store';
 import { signIn, signOut } from 'next-auth/react';
 
 const NavBar = ({ session }: any) => {
-  const { name, setName, setEmail } = sessionState();
+  const { id, name, setId, setName, setEmail } = sessionState();
+
+  const handleLogin = () => {
+    signIn(undefined, { callbackUrl: '/' });
+  };
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: '/' });
+  };
 
   useEffect(() => {
     if (session) {
+      setId(session.user._id);
       setName(session.user.name);
       setEmail(session.user.email);
     }
@@ -20,12 +29,12 @@ const NavBar = ({ session }: any) => {
       {session === null ? (
         <>
           <Link href='/signup'>회원가입</Link>
-          <button onClick={() => signIn(undefined, { callbackUrl: '/' })}>로그인</button>
+          <button onClick={handleLogin}>로그인</button>
         </>
       ) : (
         <>
-          {name}
-          <button onClick={() => signOut({ callbackUrl: '/' })}>로그아웃</button>
+          <Link href={`/user/${id}`}>{name}</Link>
+          <button onClick={handleLogout}>로그아웃</button>
         </>
       )}
     </div>

@@ -1,10 +1,13 @@
 // 전역 상태
 
 export interface SessionStateType {
+  id: string;
+  setId: (newState: string) => void;
   name: string;
   setName: (newState: string) => void;
   email: string;
   setEmail: (newState: string) => void;
+  setLogout: () => void;
 }
 
 // client props
@@ -44,6 +47,7 @@ export interface ReviewDataType {
 }
 
 export interface ReviewsType {
+  _id: string;
   content: string;
   date: string;
   likes: number;

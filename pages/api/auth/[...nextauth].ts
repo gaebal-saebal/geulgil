@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
         token.user = {}; //JWT에 기입할 정보
         token.user.name = user.name;
         token.user.email = user.email; // 로그아웃 해보고 다시 로그인 해야 추가한 정보 나옴
-        token.user.role = user.role;
+        token.user._id = user._id;
       }
       return token;
     },
