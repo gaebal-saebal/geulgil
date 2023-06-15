@@ -33,7 +33,7 @@ export interface BookDetailType {
 }
 
 export interface SessionType {
-  user: { name: string; email: string };
+  user: { name: string; email: string; _id: string };
   expires: string;
 }
 
@@ -44,6 +44,7 @@ export interface ReviewDataType {
   likes: number;
   name?: string;
   isbn: string;
+  userId: string;
 }
 
 export interface ReviewsType {
