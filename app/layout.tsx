@@ -1,8 +1,6 @@
 import NavBar from '@/components/NavBar';
 import './globals.css';
 import { Do_Hyeon } from 'next/font/google';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 const do_Hyeon = Do_Hyeon({
   subsets: ['latin'],
@@ -15,12 +13,10 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions);
-
   return (
     <html>
       <body className={do_Hyeon.className}>
-        <NavBar session={session} />
+        <NavBar />
         {children}
       </body>
     </html>
