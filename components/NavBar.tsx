@@ -57,6 +57,8 @@ const NavBar = () => {
           <button onClick={handleLogout}>로그아웃</button>
         </>
       )}
+
+      <Link href={`/search`}>검색페이지</Link>
     </div>
   );
 };
