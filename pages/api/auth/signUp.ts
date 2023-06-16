@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else if (already) {
       return res.status(409).json('이미 가입되어 있는 이메일입니다');
     } else {
-      request.image = '/public/user_profile.png';
+      request.image = 'https://cdn.pixabay.com/photo/2017/02/25/22/04/user-icon-2098873_1280.png';
 
       let hash = await bcrypt.hash(request.password, 10);
       request.password = hash;
