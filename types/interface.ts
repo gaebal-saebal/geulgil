@@ -54,4 +54,5 @@ export interface ReviewsType {
   likes: number;
   name: string;
   rate: string;
+  userId: string;
 }

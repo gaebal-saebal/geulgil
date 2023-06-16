@@ -58,6 +58,8 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
     getReviews();
   }, []);
 
+  console.log(reviews);
+
   if (lists.length > 0) {
     return (
       <div>
@@ -113,7 +115,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
               <div key={i}>
                 <span>★:{review.rate}</span>
                 <span>{review.content}</span>
-                <Link href={`/user/${id}`}>{review.name}</Link>
+                <Link href={`/user/${review.userId}`}>{review.name}</Link>
                 <span>{review.date}</span>
                 <span>{review.likes}</span>
                 <button name={review._id} onClick={(e) => handleLikes(e)}>
