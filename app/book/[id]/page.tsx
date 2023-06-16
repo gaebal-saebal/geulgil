@@ -35,7 +35,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
   };
 
   const handleLikes = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (id !== '' || id !== null) {
+    if (id !== '') {
       const target = e.target as HTMLButtonElement;
       // 로그인 상태때 클릭하면 서버에 fetch 요청 보내기(보낼때 body에 reviewId, userId 같이 보내기)
       fetch(POST_REVIEW_LIKE_URL, {
@@ -57,8 +57,6 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
     getBookDetails();
     getReviews();
   }, []);
-
-  console.log(reviews);
 
   if (lists.length > 0) {
     return (
