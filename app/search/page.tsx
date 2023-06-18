@@ -27,10 +27,25 @@ const Search = () => {
         <option value='title'>도서명</option>
         <option value='author'>저자</option>
       </select>
-      <select onChange={(e) => setSearchTarget(e.target.value)}>
-        <option value='book'>국내도서</option>
-        <option value='foreign'>외국도서</option>
-      </select>
+
+      <input
+        onChange={(e) => setSearchTarget(e.target.value)}
+        name='category'
+        type='radio'
+        value='book'
+        id='book'
+      />
+      <label htmlFor='book'>국내도서</label>
+
+      <input
+        onChange={(e) => setSearchTarget(e.target.value)}
+        name='category'
+        type='radio'
+        value='foreign'
+        id='foreign'
+      />
+      <label htmlFor='foreign'>해외도서</label>
+
       <input
         type='text'
         placeholder='도서 검색'
