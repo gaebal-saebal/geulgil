@@ -8,7 +8,7 @@ export default async function getAPI(req: NextApiRequest, res: NextApiResponse) 
     let userId = req.query.userId;
 
     let myReviews = await db.collection('review').find({ userId: userId }).toArray();
-    let sortedMyReviews = myReviews.toReversed();
+    let sortedMyReviews = myReviews.reverse();
 
     let userReviews = sortedMyReviews.map((review: ReviewDataType) => {
       return { content: review.content, isbn: review.isbn, date: review.date };
