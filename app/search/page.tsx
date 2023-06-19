@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BookListOnMainType } from '@/types/interface';
 
@@ -9,17 +9,55 @@ const Search = () => {
   const [queryType, setQueryType] = useState('title');
   const [searchTarget, setSearchTarget] = useState('book');
   const [searchLists, setSearchLists] = useState<BookListOnMainType[]>([]);
+  const [isSearched, setIsSearched] = useState(false);
+  const [searchResult, setSearchResult] = useState('');
+  const [start, setStart] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
 
-  const SEARCH_BOOK_URL = `/api/books/getSearchBooks?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=${searchTarget}`;
+  const SEARCH_BOOK_URL = `/api/books/getSearchBooks?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=${searchTarget}&start=1`;
+  const SEARCH_BOOK_RESULT_URL = `/api/books/getSearchBooks?searchKeyword=${searchResult}&queryType=${queryType}&searchTarget=${searchTarget}&start=${start}`;
 
   const handleSearch = () => {
     fetch(SEARCH_BOOK_URL)
       .then((res) => res.json())
       .then((data) => {
         setSearchLists(data.item);
-        console.log(data);
+        setSearchResult(searchKeyword);
+        setIsSearched(true);
+        setTotalPage(Math.ceil(data.totalResults / data.maxResults));
       });
   };
+
+  const handlePageChange = () => {
+    fetch(SEARCH_BOOK_RESULT_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        setSearchLists(data.item);
+      });
+  };
+
+  const handleClick = (props: number) => {
+    setStart(props);
+  };
+
+  // 총페이지수 = Math.ceil(totalResults / maxResults)
+  // 매 페이지마다 fetch를 요청 => start
+
+  const renderButtons = (num: number) => {
+    const page = [];
+    for (let i = 1; i <= num; i++) {
+      page.push(
+        <button key={i} className='px-2 border-2' onClick={() => handleClick(i)}>
+          {i}
+        </button>
+      );
+    }
+    return page;
+  };
+
+  useEffect(() => {
+    handlePageChange();
+  }, [start]);
 
   return (
     <div>
@@ -34,6 +72,7 @@ const Search = () => {
         type='radio'
         value='book'
         id='book'
+        checked
       />
       <label htmlFor='book'>국내도서</label>
 
@@ -52,7 +91,7 @@ const Search = () => {
         onChange={(e) => setSearchKeyword(e.target.value)}
       />
       <button onClick={() => handleSearch()}>검색</button>
-      <div>{searchKeyword}를(을) 검색한 결과입니다.</div>
+      <div>{isSearched === true ? `${searchResult}를(을) 검색한 결과입니다.` : null}</div>
       <div className='max-w-screen-2xl'>
         <ul className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
           {searchLists.map((list, i) => {
@@ -68,6 +107,7 @@ const Search = () => {
           })}
         </ul>
       </div>
+      <div>{renderButtons(totalPage)}</div>
     </div>
   );
 };

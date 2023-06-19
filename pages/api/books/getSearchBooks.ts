@@ -5,7 +5,7 @@ export default function getAPI(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const query = req.query;
 
-    const URL = `http://book.interpark.com/api/search.api?key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query.searchKeyword}&queryType=${query.queryType}&searchTarget=${query.searchTarget}&output=json`;
+    const URL = `http://book.interpark.com/api/search.api?key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query.searchKeyword}&queryType=${query.queryType}&searchTarget=${query.searchTarget}&output=json&maxResults=30&start=${query.start}`;
 
     fetch(URL)
       .then((response) => response.json())
