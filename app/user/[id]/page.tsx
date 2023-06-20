@@ -3,21 +3,28 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { sessionState } from '@/store/store';
+import ChangeUserImgModal from '@/components/ChangeUserImgModal';
 import Modal from '@/components/Modal';
 
 const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [myReviews, setMyReviews] = useState<{ content: string; isbn: string; date: string }[]>([]);
   const [myReviewImgs, setMyReviewImgs] = useState<{ img: string; isbn: string }[]>([]);
   const [myInfo, setMyInfo] = useState<{ name: string; email: string; image: string }>();
-  const [showModal, setShowModal] = useState(false);
+
+  const [showChangeUserImgModal, setShowChangeUserImgModal] = useState(false);
   const [changeImgUrl, setChangeImgUrl] = useState('');
+
+  const [openChangeNameWindow, setOpenChangeNameWindow] = useState(false);
+  const [changeName, setChangeName] = useState('');
+  const [showChangeUserNameModal, setShowChangeUserNameModal] = useState(false);
 
   let userId = props.params.id;
   const { id } = sessionState();
 
   const GET_USER_REVIEW_URL = `/api/users/getUserReview?userId=${userId}`;
   const GET_USER_INFORMATION_URL = `/api/users/getUserInfo?userId=${userId}`;
-  const PATCH_USER_IMG_URL = `/api/users/patchUserImg`;
+  const PATCH_USER_IMG_URL = '/api/users/patchUserImg';
+  const PATCH_USER_NAME_URL = '/api/users/patchUserName';
 
   const getMyReviewInfo = () => {
     fetch(GET_USER_REVIEW_URL)
@@ -48,6 +55,15 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
       .catch((err) => console.log(err));
   };
 
+  const patchUserName = () => {
+    fetch(PATCH_USER_NAME_URL, {
+      method: 'PATCH',
+      body: changeName,
+    })
+      .then((res) => setShowChangeUserNameModal(true))
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getMyReviewInfo();
     getUserInfo();
@@ -55,11 +71,20 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
 
   return (
     <>
-      {showModal ? (
-        <Modal
-          onClose={() => setShowModal(false)}
+      {showChangeUserImgModal ? (
+        <ChangeUserImgModal
+          onClose={() => setShowChangeUserImgModal(false)}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChangeImgUrl(e.target.value)}
-          onClick={() => patchUserImg()}
+          onClick={patchUserImg}
+        />
+      ) : null}
+      {showChangeUserNameModal ? (
+        <Modal
+          onClose={() => {
+            setShowChangeUserNameModal(false);
+            window.location.reload();
+          }}
+          modalContent={`이름이 ${changeName}(으)로 변경되었습니다`}
         />
       ) : null}
 
@@ -85,11 +110,27 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                 width={45.6}
                 height={43.9}
                 alt={myInfo.name}
-                onClick={() => setShowModal(true)}
+                onClick={() => setShowChangeUserImgModal(true)}
               />
             )}
 
-            <div>{myInfo.name}</div>
+            <div>
+              {myInfo.name}
+              {openChangeNameWindow ? (
+                <>
+                  <input
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setChangeName(e.target.value)
+                    }
+                    defaultValue={myInfo.name}
+                  />
+                  <button onClick={patchUserName}>수정하기</button>
+                  <button onClick={() => setOpenChangeNameWindow(false)}>취소</button>
+                </>
+              ) : id !== userId ? null : (
+                <button onClick={() => setOpenChangeNameWindow(true)}>✏️</button>
+              )}
+            </div>
             <div>{myInfo.email}</div>
             <div>포인트 : {myReviews.length * 3}점</div>
           </>
@@ -97,8 +138,12 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
 
         {id === userId ? (
           <>
-            <button>수정버튼</button>
-            <button>회원탈퇴버튼</button>
+            <button className='px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'>
+              비밀번호변경
+            </button>
+            <button className='px-3 py-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'>
+              회원탈퇴
+            </button>
           </>
         ) : null}
       </div>
