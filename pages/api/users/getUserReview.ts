@@ -37,6 +37,6 @@ export default async function getAPI(req: NextApiRequest, res: NextApiResponse) 
     //@ts-ignore
     const uniqueImages = [...new Set(matchedImages)];
 
-    return res.status(200).json({ userReviews, uniqueImages });
+    return res.status(200).json({ userReviews, uniqueImages, matchedImages });
   }
 }
