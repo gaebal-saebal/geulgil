@@ -79,16 +79,28 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
           );
         })}
       </div>
-      <div>작성한리뷰</div>
-      {myReviews.map((review, i) => {
-        return (
-          <Link key={i} href={`/book/${review.isbn}`}>
-            <div>
-              {review.content} // {review.date}
-            </div>
+      <div className='w-1/2'>
+        <div className='flex items-center justify-between'>
+          <span className='text-2xl'>작성한 리뷰</span>
+          <Link className='text-gray-400' href={`user/review/${userId}`}>
+            더보기
           </Link>
-        );
-      })}
+        </div>
+        <div className='flex flex-col'>
+          {myReviews
+            .map((review, i) => {
+              return (
+                <Link className='my-1 border-b-2' key={i} href={`/book/${review.isbn}`}>
+                  <div className='flex justify-between hover:text-red-200'>
+                    <span className='truncate'>{review.content}</span>
+                    <span className='text-gray-400 min-w-[84px]'>{review.date}</span>
+                  </div>
+                </Link>
+              );
+            })
+            .slice(0, 5)}
+        </div>
+      </div>
     </>
   );
 };
