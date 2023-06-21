@@ -9,7 +9,22 @@ import { ObjectId } from 'mongodb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   let db = (await connectDB).db('auth');
+  let bookDb = (await connectDB).db('book');
   let session: SessionType | null = await getServerSession(req, res, authOptions);
+  // session에 userId가 담겨져있음
+
+  /*
+  const userAllReview = await bookDb
+        .collection('review')
+        .find({ userId: 세션에담긴userId })
+        .toArray();
+
+        => 그 사람이 작성한 리뷰 다 가져올 수 있음
+
+        userAllReview에 반복문을 돌려서
+        userAllReview[0]~userAllReview[끝]의 name을 req.body(바꿀이름)으로 수정하고
+        updateOne을 사용해서 set에 담아주기만 하면 끝
+  */
 
   if (req.method === 'PATCH') {
     if (session) {
