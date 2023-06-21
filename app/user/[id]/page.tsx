@@ -22,6 +22,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [showChangeUserPasswordModal, setShowChangeUserPasswordModal] = useState(false);
   const [showChangeUserPasswordValidationModal, setShowChangeUserPasswordValidationModal] =
     useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   let userId = props.params.id;
   const { id } = sessionState();
@@ -175,11 +176,27 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
           <>
             {openChangePasswordWindow ? (
               <>
-                <input
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setChangePassword(e.target.value)
-                  }
-                />
+                <span className='relative'>
+                  <input
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setChangePassword(e.target.value)
+                    }
+                    type={showPassword ? 'text' : 'password'}
+                    className='p-0 border'
+                  />
+                  <span
+                    className='absolute bottom-0 cursor-pointer right-1'
+                    onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                      if (showPassword === true) {
+                        setShowPassword(false);
+                      } else {
+                        setShowPassword(true);
+                      }
+                    }}
+                  >
+                    {showPassword ? '🔒' : '👀'}
+                  </span>
+                </span>
                 <button onClick={patchUserPassword}>수정하기</button>
                 <button onClick={() => setOpenChangePasswordWindow(false)}>취소</button>
                 {changePassword === '' && <p className='text-red-500'>비밀번호를 입력해주세요.</p>}
