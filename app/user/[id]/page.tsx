@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { sessionState } from '@/store/store';
 import ChangeUserImgModal from '@/components/ChangeUserImgModal';
 import Modal from '@/components/Modal';
+import ConfirmModal from '@/components/ConfirmModal';
+import { signOut } from 'next-auth/react';
 
 const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [myReviews, setMyReviews] = useState<{ content: string; isbn: string; date: string }[]>([]);
@@ -23,8 +25,10 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [showChangeUserPasswordValidationModal, setShowChangeUserPasswordValidationModal] =
     useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   let userId = props.params.id;
+
   const { id } = sessionState();
 
   const GET_USER_REVIEW_URL = `/api/users/getUserReview?userId=${userId}`;
@@ -32,6 +36,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
   const PATCH_USER_IMG_URL = '/api/users/patchUserImg';
   const PATCH_USER_NAME_URL = '/api/users/patchUserName';
   const PATCH_USER_PASSWORD_URL = '/api/users/patchUserPassword';
+  const DELETE_USER_INFO_URL = `/api/users/deleteUserInfo?userId=${userId}`;
 
   const getMyReviewInfo = () => {
     fetch(GET_USER_REVIEW_URL)
@@ -83,6 +88,14 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
     }
   };
 
+  const deleteUserInfo = () => {
+    fetch(DELETE_USER_INFO_URL, {
+      method: 'DELETE',
+    })
+      .then((res) => res.json())
+      .then((data) => signOut({ callbackUrl: '/' }));
+  };
+
   useEffect(() => {
     getMyReviewInfo();
     getUserInfo();
@@ -122,6 +135,9 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
           }}
           modalContent={'비밀번호를 6자 이상 입력해주세요'}
         />
+      ) : null}
+      {showConfirmModal ? (
+        <ConfirmModal onClose={() => setShowConfirmModal(false)} onClick={deleteUserInfo} />
       ) : null}
 
       <div>
@@ -210,7 +226,10 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
               </button>
             )}
 
-            <button className='px-3 py-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'>
+            <button
+              className='px-3 py-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
+              onClick={() => setShowConfirmModal(true)}
+            >
               회원탈퇴
             </button>
           </>
