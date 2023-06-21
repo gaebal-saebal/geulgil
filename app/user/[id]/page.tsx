@@ -15,8 +15,13 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [changeImgUrl, setChangeImgUrl] = useState('');
 
   const [openChangeNameWindow, setOpenChangeNameWindow] = useState(false);
+  const [openChangePasswordWindow, setOpenChangePasswordWindow] = useState(false);
   const [changeName, setChangeName] = useState('');
+  const [changePassword, setChangePassword] = useState('a');
   const [showChangeUserNameModal, setShowChangeUserNameModal] = useState(false);
+  const [showChangeUserPasswordModal, setShowChangeUserPasswordModal] = useState(false);
+  const [showChangeUserPasswordValidationModal, setShowChangeUserPasswordValidationModal] =
+    useState(false);
 
   let userId = props.params.id;
   const { id } = sessionState();
@@ -25,6 +30,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
   const GET_USER_INFORMATION_URL = `/api/users/getUserInfo?userId=${userId}`;
   const PATCH_USER_IMG_URL = '/api/users/patchUserImg';
   const PATCH_USER_NAME_URL = '/api/users/patchUserName';
+  const PATCH_USER_PASSWORD_URL = '/api/users/patchUserPassword';
 
   const getMyReviewInfo = () => {
     fetch(GET_USER_REVIEW_URL)
@@ -63,6 +69,18 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
       .then((res) => setShowChangeUserNameModal(true))
       .catch((err) => console.log(err));
   };
+  const patchUserPassword = () => {
+    if (changePassword.length >= 6) {
+      fetch(PATCH_USER_PASSWORD_URL, {
+        method: 'PATCH',
+        body: changePassword,
+      })
+        .then((res) => setShowChangeUserPasswordModal(true))
+        .catch((err) => console.log(err));
+    } else {
+      setShowChangeUserPasswordValidationModal(true);
+    }
+  };
 
   useEffect(() => {
     getMyReviewInfo();
@@ -85,6 +103,23 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
             window.location.reload();
           }}
           modalContent={`이름이 ${changeName}(으)로 변경되었습니다`}
+        />
+      ) : null}
+      {showChangeUserPasswordModal ? (
+        <Modal
+          onClose={() => {
+            setShowChangeUserPasswordModal(false);
+            window.location.reload();
+          }}
+          modalContent={'비밀번호가 변경되었습니다'}
+        />
+      ) : null}
+      {showChangeUserPasswordValidationModal ? (
+        <Modal
+          onClose={() => {
+            setShowChangeUserPasswordValidationModal(false);
+          }}
+          modalContent={'비밀번호를 6자 이상 입력해주세요'}
         />
       ) : null}
 
@@ -138,9 +173,26 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
 
         {id === userId ? (
           <>
-            <button className='px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'>
-              비밀번호변경
-            </button>
+            {openChangePasswordWindow ? (
+              <>
+                <input
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setChangePassword(e.target.value)
+                  }
+                />
+                <button onClick={patchUserPassword}>수정하기</button>
+                <button onClick={() => setOpenChangePasswordWindow(false)}>취소</button>
+                {changePassword === '' && <p className='text-red-500'>비밀번호를 입력해주세요.</p>}
+              </>
+            ) : id !== userId ? null : (
+              <button
+                className='px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
+                onClick={() => setOpenChangePasswordWindow(true)}
+              >
+                비밀번호변경
+              </button>
+            )}
+
             <button className='px-3 py-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'>
               회원탈퇴
             </button>
