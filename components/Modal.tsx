@@ -1,7 +1,7 @@
 import { ModalProps } from '@/types/type';
 import React from 'react';
 
-const ChangeUserImgModal = ({ onClose, modalContent }: ModalProps) => {
+const Modal = ({ onClose, modalContent }: ModalProps) => {
   return (
     <div
       onClick={onClose}
@@ -27,4 +27,4 @@ const ChangeUserImgModal = ({ onClose, modalContent }: ModalProps) => {
   );
 };
 
-export default ChangeUserImgModal;
+export default Modal;
