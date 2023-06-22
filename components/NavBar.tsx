@@ -117,6 +117,15 @@ const NavBar = () => {
             </select>
             <input
               onChange={(e) => setSearchKeyword(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  if (searchKeyword.length > 0) {
+                    window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=book&start=1`;
+                  } else {
+                    setOpenModal(true);
+                  }
+                }
+              }}
               className='w-1/2 h-full px-2 outline-0'
             />
             <button
