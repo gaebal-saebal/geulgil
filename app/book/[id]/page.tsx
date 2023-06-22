@@ -89,7 +89,7 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
               setContent(e.target.value);
             }}
           />
-          <div>좋아요</div>
+
           <button
             onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
               await fetch('/api/reviews/createReview', {
@@ -108,20 +108,40 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
           </button>
         </div>
         <div>
-          {reviews.map((review, i) => {
-            return (
-              <div key={i}>
-                <span>★:{review.rate}</span>
-                <span>{review.content}</span>
-                <Link href={`/user/${review.userId}`}>{review.name}</Link>
-                <span>{review.date}</span>
-                <span>{review.likes}</span>
-                <button name={review._id} onClick={(e) => handleLikes(e)}>
-                  👍
-                </button>
+          <div className='w-1/2'>
+            <div className='flex items-center justify-between'>
+              <span className='text-2xl'>리뷰목록</span>
+              {reviews.length > 0 ? (
+                <Link className='text-gray-400' href={`book/review/${isbn}`}>
+                  더보기
+                </Link>
+              ) : null}
+            </div>
+            {reviews.length > 0 ? (
+              <div className='flex flex-col'>
+                {reviews
+                  .map((review, i) => {
+                    return (
+                      <div className='my-1 border-b-2' key={i}>
+                        <div className='flex justify-between hover:text-red-200'>
+                          <span>★:{review.rate}</span>
+                          <span className='truncate'>{review.content}</span>
+                          <Link href={`/user/${review.userId}`}>{review.name}</Link>
+                          <span className='text-gray-400 min-w-[84px]'>{review.date}</span>
+                          <span>{review.likes}</span>
+                          <button name={review._id} onClick={(e) => handleLikes(e)}>
+                            👍
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                  .slice(0, 5)}
               </div>
-            );
-          })}
+            ) : (
+              <div>작성한 리뷰가 없어요</div>
+            )}
+          </div>
         </div>
       </div>
     );
