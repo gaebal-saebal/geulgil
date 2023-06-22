@@ -13,7 +13,7 @@ const NavBar = () => {
   } | null>();
   const [openMenu, setOpenMenu] = useState(false);
   const [myInfo, setMyInfo] = useState<{ name: string; email: string; image: string }>();
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(0);
   const { id, name, setId, setName, setEmail } = sessionState();
 
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -55,6 +55,7 @@ const NavBar = () => {
   };
 
   useEffect(() => {
+    handleResize();
     getSession();
   }, []);
 
