@@ -8,6 +8,12 @@ const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [queryType, setQueryType] = useState('title');
   const [searchTarget, setSearchTarget] = useState('book');
+  const [queryObject, setQueryObject] = useState<{
+    searchKeyword: string | null;
+    queryType: string | null;
+    searchTarget: string | null;
+    start: string | null;
+  }>({ searchKeyword: '', queryType: '', searchTarget: '', start: '' });
 
   const [searchLists, setSearchLists] = useState<BookListOnMainType[]>([]);
 
@@ -15,20 +21,14 @@ const Search = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-
-  const queryObject = {
-    searchKeyword: urlParams.get('searchKeyword'),
-    queryType: urlParams.get('queryType'),
-    searchTarget: urlParams.get('searchTarget'),
-    start: urlParams.get('start'),
-  };
-
   const SEARCH_BOOK_URL = `/api/books/getSearchBooks?searchKeyword=${queryObject.searchKeyword}&queryType=${queryObject.queryType}&searchTarget=${queryObject.searchTarget}&start=${queryObject.start}`;
 
   const handleSearch = () => {
-    fetch(SEARCH_BOOK_URL)
+    fetch(SEARCH_BOOK_URL, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setSearchLists(data.item);
@@ -56,8 +56,27 @@ const Search = () => {
   };
 
   useEffect(() => {
-    handleSearch();
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if (urlParams.get('searchKeyword') !== null) {
+      const obj: {
+        searchKeyword: string | null;
+        queryType: string | null;
+        searchTarget: string | null;
+        start: string | null;
+      } = {
+        searchKeyword: urlParams.get('searchKeyword'),
+        queryType: urlParams.get('queryType'),
+        searchTarget: urlParams.get('searchTarget'),
+        start: urlParams.get('start'),
+      };
+      setQueryObject(obj);
+    }
   }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [queryObject]);
 
   return (
     <div>
@@ -118,7 +137,7 @@ const Search = () => {
           {searchLists.map((list, i) => {
             return (
               <li key={i} className='flex flex-col p-6'>
-                <Link href={`/book/${list.isbn}`}>
+                <Link href={`/book/${list.isbn}`} prefetch={false}>
                   <img src={list.coverLargeUrl} />
                 </Link>
                 <div>{list.title}</div>

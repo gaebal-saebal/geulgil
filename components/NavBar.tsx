@@ -96,7 +96,7 @@ const NavBar = () => {
             )}
           </span>
           <div className='w-32'>
-            <Link href='/'>
+            <Link href='/' prefetch={false}>
               {screenWidth > 790 ? (
                 <img src='/imgLogo.svg' alt='logo' />
               ) : (
@@ -137,7 +137,7 @@ const NavBar = () => {
         <div className='flex items-center justify-end w-1/4 h-full'>
           {session === null ? (
             <>
-              <Link className='text-gray-200' href='/signup'>
+              <Link className='text-gray-200' href='/signup' prefetch={false}>
                 회원가입
               </Link>
               <button className='ml-4 text-gray-200' onClick={handleLogin}>
@@ -146,7 +146,7 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <Link className='flex items-center h-full' href={`/user/${id}`}>
+              <Link className='flex items-center h-full' href={`/user/${id}`} prefetch={false}>
                 {myInfo !== undefined ? (
                   <>
                     <img className='mr-1 rounded-full h-1/2' src={myInfo.image} alt='user-image' />
@@ -172,6 +172,7 @@ const NavBar = () => {
               onClick={() => setOpenMenu(!openMenu)}
               href='/notice'
               className='text-gray-200 hover:text-gray-300'
+              prefetch={false}
             >
               공지사항
             </Link>
@@ -179,6 +180,7 @@ const NavBar = () => {
               onClick={() => setOpenMenu(!openMenu)}
               href='/faq'
               className='text-gray-200 hover:text-gray-300'
+              prefetch={false}
             >
               FAQ
             </Link>
