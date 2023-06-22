@@ -17,7 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html>
       <body className={do_Hyeon.className}>
         <NavBar />
-        {children}
+        <div className='pt-16'>{children}</div>
       </body>
     </html>
   );
