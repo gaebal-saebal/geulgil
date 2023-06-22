@@ -5,6 +5,7 @@ import { sessionState } from '@/store/store';
 import { signIn, signOut } from 'next-auth/react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoMdCloseCircle } from 'react-icons/io';
+import Modal from './Modal';
 
 const NavBar = () => {
   const [session, setSession] = useState<{
@@ -14,6 +15,11 @@ const NavBar = () => {
   const [myInfo, setMyInfo] = useState<{ name: string; email: string; image: string }>();
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const { id, name, setId, setName, setEmail } = sessionState();
+
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [queryType, setQueryType] = useState('title');
+
+  const [openModal, setOpenModal] = useState(false);
 
   const GET_SESSION_URL = `/api/users/getUserSession`;
   const GET_USER_INFORMATION_URL = `/api/users/getUserInfo?userId=`;
@@ -70,6 +76,15 @@ const NavBar = () => {
 
   return (
     <>
+      {openModal ? (
+        <Modal
+          onClose={() => {
+            setOpenModal(false);
+          }}
+          modalContent={`검색어를 입력해주세요.`}
+        />
+      ) : null}
+
       <div className='absolute top-0 left-0 flex w-full items-center h-16 bg-[teal] px-5'>
         <div className='flex items-center w-1/4 h-full'>
           <span onClick={() => setOpenMenu(!openMenu)} className='mr-5 cursor-pointer'>
@@ -92,17 +107,29 @@ const NavBar = () => {
 
         <div className='w-1/2 h-full flex-center'>
           <div className='w-full h-3/5 flex-center'>
-            <select className='h-full pl-3 rounded-l-lg outline-0'>
+            <select
+              onChange={(e) => setQueryType(e.target.value)}
+              className='h-full pl-3 rounded-l-lg outline-0'
+            >
               <option value='title'>도서명</option>
               <option value='author'>저자</option>
             </select>
-            <input className='w-1/2 h-full px-2 outline-0' />
-            <Link
+            <input
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className='w-1/2 h-full px-2 outline-0'
+            />
+            <button
               className='w-20 h-full px-3 duration-300 bg-red-200 rounded-r-lg flex-center hover:bg-red-300'
-              href={`/search`}
+              onClick={() => {
+                if (searchKeyword.length > 0) {
+                  window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=book&start=1`;
+                } else {
+                  setOpenModal(true);
+                }
+              }}
             >
               검색
-            </Link>
+            </button>
           </div>
         </div>
 
