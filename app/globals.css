@@ -9,3 +9,14 @@
     align-items: center;
   }
 }
+
+.swiper-button-prev {
+  color: teal !important;
+}
+.swiper-button-next {
+  color: teal !important;
+}
+
+body {
+  height: 100%;
+}

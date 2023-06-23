@@ -3,7 +3,7 @@ import BookListOnMain from '@/components/BookListOnMain';
 
 export default async function Home() {
   return (
-    <div>
+    <div className='flex justify-center'>
       <BookListOnMain />
     </div>
   );
