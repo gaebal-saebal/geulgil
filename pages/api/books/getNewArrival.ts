@@ -5,7 +5,7 @@ export default function getAPI(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const categoryId = req.query.categoryId as string;
     fetch(
-      `http://book.interpark.com/api/bestSeller.api?key=${process.env.NEXT_PUBLIC_API_KEY}&categoryId=${categoryId}&output=json`
+      `http://book.interpark.com/api/newBook.api?key=${process.env.NEXT_PUBLIC_API_KEY}&categoryId=${categoryId}&output=json`
     )
       .then((response) => response.json())
       .then((data) => {
