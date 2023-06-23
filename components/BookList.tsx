@@ -8,7 +8,7 @@ import { Navigation } from 'swiper';
 
 const BookList = ({ lists }: { lists: BookListOnMainType[] }) => {
   return (
-    <div className='max-w-screen-xl w-full mb-24 bg-gray-100 pb-6 rounded'>
+    <div className='w-full max-w-screen-xl pb-6 mb-24 bg-gray-100 rounded'>
       <Swiper
         spaceBetween={30}
         modules={[Navigation]}
@@ -41,7 +41,12 @@ const BookList = ({ lists }: { lists: BookListOnMainType[] }) => {
           return (
             <SwiperSlide key={i} className='flex flex-col items-center'>
               <Link href={`/book/${list.isbn}`} className='h-[300px] flex items-center'>
-                <img src={list.coverLargeUrl} />
+                <div className='relative'>
+                  <img src={list.coverLargeUrl} />
+                  <div className='absolute top-0 left-0 w-8 h-8 text-white bg-orange-500 border flex-center'>
+                    {i + 1}
+                  </div>
+                </div>
               </Link>
               <div className='w-full truncate'>{list.title}</div>
               <div className='w-full text-sm text-gray-500'>{list.author}</div>
