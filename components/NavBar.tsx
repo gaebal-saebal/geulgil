@@ -111,7 +111,7 @@ const NavBar = () => {
             <div className='w-full h-3/5 flex-center'>
               <select
                 onChange={(e) => setQueryType(e.target.value)}
-                className='h-full pl-3 rounded-l-lg outline-0'
+                className='hidden h-full pl-3 bg-white rounded-l-lg outline-0 sm:flex'
               >
                 <option value='title'>도서명</option>
                 <option value='author'>저자</option>
@@ -127,10 +127,10 @@ const NavBar = () => {
                     }
                   }
                 }}
-                className='w-1/2 h-full px-2 outline-0'
+                className='w-1/2 h-full px-2 rounded-l-lg outline-0 sm:rounded-none'
               />
               <button
-                className='w-20 h-full px-3 duration-300 bg-red-200 rounded-r-lg flex-center hover:bg-red-300'
+                className='w-8 h-full px-3 duration-300 bg-white rounded-r-lg sm:bg-red-200 sm:w-20 flex-center hover:bg-red-300'
                 onClick={() => {
                   if (searchKeyword.length > 0) {
                     window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=book&start=1`;
@@ -139,12 +139,12 @@ const NavBar = () => {
                   }
                 }}
               >
-                검색
+                {screenWidth > 640 ? '검색' : '🔍'}
               </button>
             </div>
           </div>
 
-          <div className='flex items-center justify-end w-1/4 h-full'>
+          <div className='items-center justify-end hidden w-1/4 h-full md:flex'>
             {session === null ? (
               <>
                 <Link className='text-gray-200' href='/signup' prefetch={false}>
@@ -164,7 +164,7 @@ const NavBar = () => {
                         src={myInfo.image}
                         alt='user-image'
                       />
-                      <span className='text-gray-200 hidden sm:flex'>{name}</span>
+                      <span className='hidden text-gray-200 sm:flex'>{name}</span>
                     </>
                   ) : null}
                 </Link>
@@ -177,35 +177,66 @@ const NavBar = () => {
         </div>
         <div
           className={`absolute flex duration-500 top-16 left-0 w-full bg-[teal] ${
-            openMenu ? 'h-16' : 'h-0'
+            openMenu ? 'h-40 py-4' : 'h-0'
           }`}
         >
           {openMenu ? (
-            <div className='flex items-center justify-around w-full h-full '>
-              <Link
-                onClick={() => setOpenMenu(!openMenu)}
-                href='/notice'
-                className='text-gray-200 hover:text-gray-300'
-                prefetch={false}
-              >
-                공지사항
-              </Link>
-              <Link
-                onClick={() => setOpenMenu(!openMenu)}
-                href='/faq'
-                className='text-gray-200 hover:text-gray-300'
-                prefetch={false}
-              >
-                FAQ
-              </Link>
-              <Link
-                onClick={() => setOpenMenu(!openMenu)}
-                href='http://pf.kakao.com/_xexaxePxj/chat'
-                target='_blank'
-                className='text-gray-200 hover:text-gray-300'
-              >
-                문의하기
-              </Link>
+            <div className='flex justify-around w-full h-full '>
+              <div className='flex flex-col items-center justify-around'>
+                <Link
+                  onClick={() => setOpenMenu(!openMenu)}
+                  href='/notice'
+                  className='text-gray-200 hover:text-gray-300'
+                  prefetch={false}
+                >
+                  공지사항
+                </Link>
+                <Link
+                  onClick={() => setOpenMenu(!openMenu)}
+                  href='/faq'
+                  className='text-gray-200 hover:text-gray-300'
+                  prefetch={false}
+                >
+                  FAQ
+                </Link>
+                <Link
+                  onClick={() => setOpenMenu(!openMenu)}
+                  href='http://pf.kakao.com/_xexaxePxj/chat'
+                  target='_blank'
+                  className='text-gray-200 hover:text-gray-300'
+                >
+                  문의하기
+                </Link>
+              </div>
+              <div className='flex flex-col items-center justify-around'>
+                {session === null ? (
+                  <>
+                    <Link
+                      onClick={() => setOpenMenu(!openMenu)}
+                      href='/signUp'
+                      className='text-gray-200 hover:text-gray-300'
+                    >
+                      회원가입
+                    </Link>
+                    <button onClick={handleLogin} className='text-gray-200 hover:text-gray-300'>
+                      로그인
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      onClick={() => setOpenMenu(!openMenu)}
+                      href={`/user/${id}`}
+                      className='text-gray-200 hover:text-gray-300'
+                    >
+                      마이페이지
+                    </Link>
+                    <button className='text-gray-200 hover:text-gray-300' onClick={handleLogout}>
+                      로그아웃
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           ) : null}
         </div>
