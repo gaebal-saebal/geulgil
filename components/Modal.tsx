@@ -5,7 +5,7 @@ const Modal = ({ onClose, modalContent }: ModalProps) => {
   return (
     <div
       onClick={onClose}
-      className='flex justify-center items-center absolute inset-0 z-50 bg-[rgba(0,0,0,0.5)] '
+      className='flex justify-center pt-20 absolute inset-0 z-50 bg-[rgba(0,0,0,0.5)] '
     >
       <form
         onClick={(e) => e.stopPropagation()}
