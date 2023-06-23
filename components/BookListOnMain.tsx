@@ -33,7 +33,7 @@ const BookListOnMain = () => {
   }, []);
 
   return (
-    <div className='mt-16 max-w-7xl '>
+    <div className='mt-16 max-w-screen-xl w-full'>
       <h1 className='text-3xl  mb-2'>베스트셀러</h1>
       <h3 className='text-gray-500 mb-5'>
         인터넷에서 판매되는 상품의 지난 하루간 가장 많이 판매된 순위입니다.

@@ -8,13 +8,17 @@ import { Navigation } from 'swiper';
 
 const BookList = ({ lists }: { lists: BookListOnMainType[] }) => {
   return (
-    <div className='max-w-screen-lg mb-24 bg-gray-100 pb-6 rounded'>
+    <div className='max-w-screen-xl w-full mb-24 bg-gray-100 pb-6 rounded'>
       <Swiper
         spaceBetween={30}
         modules={[Navigation]}
         navigation={true}
         breakpoints={{
           0: {
+            slidesPerView: 1,
+            slidesPerGroup: 1,
+          },
+          500: {
             slidesPerView: 2,
             slidesPerGroup: 2,
           },
@@ -31,7 +35,7 @@ const BookList = ({ lists }: { lists: BookListOnMainType[] }) => {
             slidesPerGroup: 5,
           },
         }}
-        className=' px-16 '
+        className='px-16'
       >
         {lists.map((list, i) => {
           return (
