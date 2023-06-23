@@ -33,24 +33,24 @@ const BookListOnMain = () => {
   }, []);
 
   return (
-    <div className='mt-16 max-w-screen-xl w-full'>
-      <h1 className='text-3xl  mb-2'>베스트셀러</h1>
-      <h3 className='text-gray-500 mb-5'>
+    <div className='w-full max-w-screen-xl mt-16'>
+      <h1 className='mb-2 ml-5 text-3xl xl:ml-0'>베스트셀러</h1>
+      <h3 className='mb-5 ml-5 text-gray-500 xl:ml-0'>
         인터넷에서 판매되는 상품의 지난 하루간 가장 많이 판매된 순위입니다.
       </h3>
       <BookList lists={bestSellers} />
-      <h1 className='text-3xl mb-2'>신간리스트</h1>
-      <h3 className='text-gray-500 mb-5'>
+      <h1 className='mb-2 ml-5 text-3xl xl:ml-0'>신간리스트</h1>
+      <h3 className='mb-5 ml-5 text-gray-500 xl:ml-0'>
         이 주에 새롭게 등록된 신상품 중 글길이 추천하는 리스트입니다.
       </h3>
       <BookList lists={newArrivals} />
-      <h1 className='text-3xl mb-2'>해외 베스트셀러</h1>
-      <h3 className='text-gray-500 mb-5'>
+      <h1 className='mb-2 ml-5 text-3xl xl:ml-0'>해외 베스트셀러</h1>
+      <h3 className='mb-5 ml-5 text-gray-500 xl:ml-0'>
         인터넷에서 판매되는 상품의 지난 하루간 가장 많이 판매된 순위입니다.
       </h3>
       <BookList lists={fBestSellers} />
-      <h1 className='text-3xl mb-2'>해외 신간리스트</h1>
-      <h3 className='text-gray-500 mb-5'>
+      <h1 className='mb-2 ml-5 text-3xl xl:ml-0'>해외 신간리스트</h1>
+      <h3 className='mb-5 ml-5 text-gray-500 xl:ml-0'>
         이 주에 새롭게 등록된 신상품 중 글길이 추천하는 리스트입니다.
       </h3>
       <BookList lists={fNewArrivals} />
