@@ -68,36 +68,38 @@ const Review = (props: { params: { id: string } }) => {
   }, []);
 
   return (
-    <>
-      {lists.length > 0 ? (
-        <div className='flex flex-col items-center'>
-          <img src={lists[0].coverLargeUrl} alt='book-cover' className='border-2' />
-          <div>{lists[0].title}</div>
-        </div>
-      ) : null}
-      <div className='flex flex-col items-center'>
-        {reviews.map((review, i) => {
-          return (
-            <div className='flex w-full p-3 my-2 justify-center' key={i}>
-              <div className='flex flex-col justify-between w-3/4 p-3 border-2 rounded-xl hover:bg-gray-100'>
-                <span>{star(review.rate)}</span>
-                <div>{review.content}</div>
-                <div className='flex justify-end'>
-                  <span>{review.likes}</span>
-                  <button name={review._id} onClick={(e) => handleLikes(e)}>
-                    👍
-                  </button>
-                </div>
-                <div className='flex justify-between'>
-                  <Link href={`/user/${review.userId}`}>{review.name}</Link>
-                  <div className='flex justify-end text-gray-400'>{review.date}</div>
+    <div className='flex justify-center'>
+      <div className='max-w-screen-xl flex flex-col w-full'>
+        {lists.length > 0 ? (
+          <div className='flex flex-col items-center mt-12'>
+            <img src={lists[0].coverLargeUrl} alt='book-cover' className='border-2' />
+            <div>{lists[0].title}</div>
+          </div>
+        ) : null}
+        <div className='flex flex-col items-center mb-12 mt-6'>
+          {reviews.map((review, i) => {
+            return (
+              <div className='flex w-full p-3 my-2 justify-center' key={i}>
+                <div className='flex flex-col justify-between w-full p-3 border-2 border-orange-300 rounded-xl bg-white'>
+                  <span>{star(review.rate)}</span>
+                  <div>{review.content}</div>
+                  <div className='flex justify-end'>
+                    <span>{review.likes}</span>
+                    <button name={review._id} onClick={(e) => handleLikes(e)}>
+                      👍
+                    </button>
+                  </div>
+                  <div className='flex justify-between'>
+                    <Link href={`/user/${review.userId}`}>{review.name}</Link>
+                    <div className='flex justify-end text-gray-400'>{review.date}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
