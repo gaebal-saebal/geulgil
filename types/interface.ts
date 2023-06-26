@@ -28,7 +28,15 @@ export interface UserBookImgType {
 }
 
 export interface BookDetailType {
-  [key: string]: string;
+  author: string;
+  categoryName: string;
+  coverLargeUrl: string;
+  description: string;
+  isbn: string;
+  pubDate: string;
+  priceStandard: number;
+  publisher: string;
+  title: string;
 }
 
 export interface SessionType {
