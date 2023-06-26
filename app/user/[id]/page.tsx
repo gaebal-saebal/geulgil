@@ -7,6 +7,7 @@ import ChangeUserImgModal from '@/components/ChangeUserImgModal';
 import Modal from '@/components/Modal';
 import ConfirmModal from '@/components/ConfirmModal';
 import { signOut } from 'next-auth/react';
+import UserBookImg from '@/components/UserBookImg';
 
 const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [myReviews, setMyReviews] = useState<{ content: string; isbn: string; date: string }[]>([]);
@@ -102,179 +103,210 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
   }, []);
 
   return (
-    <>
-      {showChangeUserImgModal ? (
-        <ChangeUserImgModal
-          onClose={() => setShowChangeUserImgModal(false)}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChangeImgUrl(e.target.value)}
-          onClick={patchUserImg}
-        />
-      ) : null}
-      {showChangeUserNameModal ? (
-        <Modal
-          onClose={() => {
-            setShowChangeUserNameModal(false);
-            window.location.reload();
-          }}
-          modalContent={`이름이 ${changeName}(으)로 변경되었습니다`}
-        />
-      ) : null}
-      {showChangeUserPasswordModal ? (
-        <Modal
-          onClose={() => {
-            setShowChangeUserPasswordModal(false);
-            window.location.reload();
-          }}
-          modalContent={'비밀번호가 변경되었습니다'}
-        />
-      ) : null}
-      {showChangeUserPasswordValidationModal ? (
-        <Modal
-          onClose={() => {
-            setShowChangeUserPasswordValidationModal(false);
-          }}
-          modalContent={'비밀번호를 6자 이상 입력해주세요'}
-        />
-      ) : null}
-      {showConfirmModal ? (
-        <ConfirmModal onClose={() => setShowConfirmModal(false)} onClick={deleteUserInfo} />
-      ) : null}
-
-      <div>
-        {myInfo === undefined ? (
-          <div>로딩중</div>
-        ) : (
-          <>
-            {id !== userId ? (
-              <Link href={myInfo.image} target='_blank'>
-                <img
-                  className='rounded-[50%]'
-                  src={myInfo.image}
-                  width={45.6}
-                  height={43.9}
-                  alt={myInfo.name}
-                />
-              </Link>
-            ) : (
-              <img
-                className='rounded-[50%]'
-                src={myInfo.image}
-                width={45.6}
-                height={43.9}
-                alt={myInfo.name}
-                onClick={() => setShowChangeUserImgModal(true)}
-              />
-            )}
-
-            <div>
-              {myInfo.name}
-              {openChangeNameWindow ? (
-                <>
-                  <input
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setChangeName(e.target.value)
-                    }
-                    defaultValue={myInfo.name}
-                  />
-                  <button onClick={patchUserName}>수정하기</button>
-                  <button onClick={() => setOpenChangeNameWindow(false)}>취소</button>
-                </>
-              ) : id !== userId ? null : (
-                <button onClick={() => setOpenChangeNameWindow(true)}>✏️</button>
-              )}
-            </div>
-            <div>{myInfo.email}</div>
-            <div>포인트 : {myReviews.length * 3}점</div>
-          </>
-        )}
-
-        {id === userId ? (
-          <>
-            {openChangePasswordWindow ? (
-              <>
-                <span className='relative'>
-                  <input
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setChangePassword(e.target.value)
-                    }
-                    type={showPassword ? 'text' : 'password'}
-                    className='p-0 border'
-                  />
-                  <span
-                    className='absolute bottom-0 cursor-pointer right-1'
-                    onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
-                      if (showPassword === true) {
-                        setShowPassword(false);
-                      } else {
-                        setShowPassword(true);
-                      }
-                    }}
-                  >
-                    {showPassword ? '🔒' : '👀'}
-                  </span>
-                </span>
-                <button onClick={patchUserPassword}>수정하기</button>
-                <button onClick={() => setOpenChangePasswordWindow(false)}>취소</button>
-                {changePassword === '' && <p className='text-red-500'>비밀번호를 입력해주세요.</p>}
-              </>
-            ) : id !== userId ? null : (
-              <button
-                className='px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
-                onClick={() => setOpenChangePasswordWindow(true)}
-              >
-                비밀번호변경
-              </button>
-            )}
-
-            <button
-              className='px-3 py-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
-              onClick={() => setShowConfirmModal(true)}
-            >
-              회원탈퇴
-            </button>
-          </>
+    <div className='flex justify-center'>
+      <div className='w-1/2 my-24 min-w-[640px]'>
+        {showChangeUserImgModal ? (
+          <ChangeUserImgModal
+            onClose={() => setShowChangeUserImgModal(false)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChangeImgUrl(e.target.value)}
+            onClick={patchUserImg}
+          />
         ) : null}
-      </div>
+        {showChangeUserNameModal ? (
+          <Modal
+            onClose={() => {
+              setShowChangeUserNameModal(false);
+              window.location.reload();
+            }}
+            modalContent={`이름이 ${changeName}(으)로 변경되었습니다`}
+          />
+        ) : null}
+        {showChangeUserPasswordModal ? (
+          <Modal
+            onClose={() => {
+              setShowChangeUserPasswordModal(false);
+              window.location.reload();
+            }}
+            modalContent={'비밀번호가 변경되었습니다'}
+          />
+        ) : null}
+        {showChangeUserPasswordValidationModal ? (
+          <Modal
+            onClose={() => {
+              setShowChangeUserPasswordValidationModal(false);
+            }}
+            modalContent={'비밀번호를 6자 이상 입력해주세요'}
+          />
+        ) : null}
+        {showConfirmModal ? (
+          <ConfirmModal onClose={() => setShowConfirmModal(false)} onClick={deleteUserInfo} />
+        ) : null}
 
-      <div>읽은 책 이미지</div>
-      <div className='flex'>
-        {myReviewImgs.map((img, i) => {
-          return (
-            <Link key={i} href={`/book/${img.isbn}`}>
-              <img src={img.img} />
-            </Link>
-          );
-        })}
-      </div>
-      <div className='w-1/2'>
-        <div className='flex items-center justify-between'>
-          <span className='text-2xl'>작성한 리뷰</span>
-          {myReviews.length > 0 ? (
-            <Link className='text-gray-400' href={`user/review/${userId}`}>
-              더보기
-            </Link>
-          ) : null}
+        <div className='flex flex-col'>
+          {myInfo === undefined ? (
+            <div>로딩중</div>
+          ) : (
+            <div className='flex h-full px-2 py-10 bg-white rounded-lg'>
+              {id !== userId ? (
+                <Link href={myInfo.image} target='_blank' className='w-1/3 flex-center'>
+                  <img className='rounded-[50%]' src={myInfo.image} alt={myInfo.name} />
+                </Link>
+              ) : (
+                <div className='w-1/3 flex-center'>
+                  <img
+                    className='rounded-[50%]'
+                    src={myInfo.image}
+                    alt={myInfo.name}
+                    onClick={() => setShowChangeUserImgModal(true)}
+                  />
+                </div>
+              )}
+              <div className='flex flex-col justify-center w-2/3 ml-12'>
+                <div className='flex flex-col items-start mb-5 '>
+                  <span className='text-4xl'>{myInfo.name}</span>
+                  <div className='flex justify-between w-full'>
+                    {openChangeNameWindow ? (
+                      <div className='p-5 bg-white border-2 border-orange-300 rounded-lg'>
+                        <div>닉네임 변경</div>
+                        <div className='flex'>
+                          <input
+                            className='w-1/2 pl-2 mr-5 border-2 border-orange-300 rounded-lg focus:outline-none'
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                              setChangeName(e.target.value)
+                            }
+                            defaultValue={myInfo.name}
+                          />
+                          <div className='flex w-1/2'>
+                            <button
+                              className='p-2 mr-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
+                              onClick={patchUserName}
+                            >
+                              수정하기
+                            </button>
+                            <button
+                              className='px-5 py-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
+                              onClick={() => setOpenChangeNameWindow(false)}
+                            >
+                              취소
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : id !== userId ? null : (
+                      <button className='' onClick={() => setOpenChangeNameWindow(true)}>
+                        ✏️
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className='text-xl '>{myInfo.email}</div>
+                <div className='text-xl '>포인트 : {myReviews.length * 3}점</div>
+                {id === userId ? (
+                  <>
+                    {openChangePasswordWindow ? (
+                      <div className='p-5 bg-white border-2 border-orange-300 rounded-lg'>
+                        <div>비밀번호 변경</div>
+                        <span className='relative w-full'>
+                          <input
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                              setChangePassword(e.target.value)
+                            }
+                            type={showPassword ? 'text' : 'password'}
+                            className='w-full h-10 pl-2 border-2 border-orange-300 rounded-lg focus:outline-none'
+                          />
+                          <span
+                            className='absolute bottom-0 cursor-pointer right-3'
+                            onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                              if (showPassword === true) {
+                                setShowPassword(false);
+                              } else {
+                                setShowPassword(true);
+                              }
+                            }}
+                          >
+                            {showPassword ? '🔒' : '👀'}
+                          </span>
+                        </span>
+                        <div className='mt-2'>
+                          <button
+                            className='px-5 py-2 mr-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
+                            onClick={patchUserPassword}
+                          >
+                            수정
+                          </button>
+                          <button
+                            className='px-5 py-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
+                            onClick={() => setOpenChangePasswordWindow(false)}
+                          >
+                            취소
+                          </button>
+                        </div>
+                        {changePassword === '' && (
+                          <p className='text-red-500'>비밀번호를 입력해주세요.</p>
+                        )}
+                      </div>
+                    ) : id !== userId ? null : (
+                      <button
+                        className='w-1/3 px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
+                        onClick={() => setOpenChangePasswordWindow(true)}
+                      >
+                        비밀번호 변경
+                      </button>
+                    )}
+
+                    <button
+                      className='w-1/3 px-3 py-2 mt-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
+                      onClick={() => setShowConfirmModal(true)}
+                    >
+                      회원탈퇴
+                    </button>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          )}
         </div>
-        {myReviews.length > 0 ? (
-          <div className='flex flex-col'>
-            {myReviews
-              .map((review, i) => {
-                return (
-                  <Link className='my-1 border-b-2' key={i} href={`/book/${review.isbn}`}>
-                    <div className='flex justify-between hover:text-red-200'>
-                      <span className='truncate'>{review.content}</span>
-                      <span className='text-gray-400 min-w-[84px]'>{review.date}</span>
-                    </div>
-                  </Link>
-                );
-              })
-              .slice(0, 5)}
+
+        {/* swiper */}
+        <div className='flex mt-12 mb-6'>
+          <UserBookImg lists={myReviewImgs} />
+        </div>
+
+        {/* 작성한 리뷰 */}
+        <div className='w-full px-5 py-10 bg-white rounded-lg'>
+          <div className='flex items-center justify-between mb-5'>
+            <span className='text-3xl'>작성한 리뷰</span>
+            {myReviews.length > 0 ? (
+              <Link className='text-gray-400' href={`user/review/${userId}`}>
+                더보기
+              </Link>
+            ) : null}
           </div>
-        ) : (
-          <div>작성한 리뷰가 없어요</div>
-        )}
+          {myReviews.length > 0 ? (
+            <div className='flex flex-col'>
+              {myReviews
+                .map((review, i) => {
+                  return (
+                    <Link
+                      className='my-1 border-b-2 border-orange-200'
+                      key={i}
+                      href={`/book/${review.isbn}`}
+                    >
+                      <div className='flex justify-between hover:text-orange-300'>
+                        <span className='truncate'>{review.content}</span>
+                        <span className='text-gray-400 min-w-[84px]'>{review.date}</span>
+                      </div>
+                    </Link>
+                  );
+                })
+                .slice(0, 5)}
+            </div>
+          ) : (
+            <div>작성한 리뷰가 없어요</div>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

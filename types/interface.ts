@@ -23,6 +23,10 @@ export interface BookListOnMainType {
   [key: string]: string;
 }
 
+export interface UserBookImgType {
+  [key: string]: string;
+}
+
 export interface BookDetailType {
   [key: string]: string;
 }
