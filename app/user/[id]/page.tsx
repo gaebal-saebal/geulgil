@@ -146,7 +146,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
           {myInfo === undefined ? (
             <div>로딩중</div>
           ) : (
-            <div className='flex h-full px-2 py-10 bg-white rounded-lg'>
+            <div className='flex h-full px-2 py-10 bg-white rounded-lg shadow-xl'>
               {id !== userId ? (
                 <Link href={myInfo.image} target='_blank' className='w-1/3 flex-center'>
                   <img className='rounded-[50%]' src={myInfo.image} alt={myInfo.name} />
@@ -273,7 +273,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
         </div>
 
         {/* 작성한 리뷰 */}
-        <div className='w-full px-5 py-10 bg-white rounded-lg'>
+        <div className='w-full px-5 py-10 bg-white rounded-lg shadow-xl'>
           <div className='flex items-center justify-between mb-5'>
             <span className='text-3xl'>작성한 리뷰</span>
             {myReviews.length > 0 ? (
