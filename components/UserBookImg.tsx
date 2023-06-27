@@ -15,7 +15,7 @@ const UserBookImg = ({ lists }: { lists: UserBookImgType[] }) => {
             <SwiperSlide key={i} className='flex flex-col items-center'>
               <Link href={`/book/${list.isbn}`} className='h-[300px] flex items-center'>
                 <div className='relative'>
-                  <img src={list.img} />
+                  <img src={list.img} className='shadow-lg' />
                 </div>
               </Link>
             </SwiperSlide>
