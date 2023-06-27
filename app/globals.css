@@ -8,6 +8,20 @@
     justify-content: center;
     align-items: center;
   }
+  .pagination-button {
+    padding: 0.5rem 1rem;
+    margin: 0.2rem 0.2rem;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(253 186 116);
+  }
+  .pagination-button:hover {
+    background-color: rgb(251 146 60);
+  }
+  .pagination-button:active {
+    background-color: rgb(249 115 22);
+  }
+
   .scrollbar-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
