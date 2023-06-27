@@ -5,18 +5,19 @@ import { sessionState } from '@/store/store';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 
-const Book = (props: { params: { id: string }; searchParams: {} }) => {
+const Book = (props: { params: { id: string }; searchParams: { searchTarget: string } }) => {
   const [lists, setLists] = useState<BookDetailType[]>([]);
   const [reviews, setReviews] = useState<ReviewsType[]>([]);
   const [content, setContent] = useState('');
   const [rate, setRate] = useState('1');
   const [reviewOpen, setReivewOpen] = useState(false);
-  const isbn = props.params.id;
 
+  const isbn = props.params.id;
+  const searchTarget = props.searchParams.searchTarget;
   const { id } = sessionState();
 
   const GET_REVIEW_URL = `/api/books/getReviews?isbn=${isbn}`;
-  const GET_BOOK_INFO_URL = `/api/books/getBookDetails?isbn=${isbn}`;
+  const GET_BOOK_INFO_URL = `/api/books/getBookDetails?searchTarget=${searchTarget}&isbn=${isbn}`;
   const POST_REVIEW_LIKE_URL = `/api/reviews/likeReview`;
 
   const priceHandler = (num: number) => {
@@ -25,8 +26,11 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
     if (stringify.length === 6) {
       result = `${stringify.substring(0, 3)},${stringify.substring(3, 6)}`;
       return result;
-    } else {
+    } else if (stringify.length === 5) {
       result = `${stringify.substring(0, 2)},${stringify.substring(2, 5)}`;
+      return result;
+    } else {
+      result = `${stringify.substring(0, 1)},${stringify.substring(1, 4)}`;
       return result;
     }
   };
@@ -73,11 +77,11 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
 
   if (lists.length > 0) {
     return (
-      <div className='flex  justify-center'>
-        <div className='flex flex-col mt-6 max-w-screen-xl items-center mx-6 h-full'>
+      <div className='flex justify-center w-full'>
+        <div className='flex flex-col mt-6 max-w-screen-xl items-center mx-6 h-full w-full'>
           <div className='flex w-full h-full'>
             <div className='w-1/3 mr-6 flex-center flex-col'>
-              <img src={lists[0].coverLargeUrl} alt='book-cover' />
+              <img src={lists[0].coverLargeUrl} alt='book-cover' className='shadow-xl mb-3' />
               <span>{`${String(lists[0].pubDate).substring(0, 4)}. ${String(
                 lists[0].pubDate
               ).substring(4, 6)}. ${String(lists[0].pubDate).substring(6, 8)}. 출간`}</span>
@@ -168,26 +172,37 @@ const Book = (props: { params: { id: string }; searchParams: {} }) => {
                     .map((review, i) => {
                       return (
                         <div className='my-1 border-b-2 border-orange-200' key={i}>
-                          <div className='flex justify-between hover:text-orange-300'>
-                            <span>
-                              {review.rate === '1'
-                                ? '⭑⭒⭒⭒⭒'
-                                : review.rate === '2'
-                                ? '⭑⭑⭒⭒⭒'
-                                : review.rate === '3'
-                                ? '⭑⭑⭑⭒⭒'
-                                : review.rate === '4'
-                                ? '⭑⭑⭑⭑⭒'
-                                : '⭑⭑⭑⭑⭑'}
-                            </span>
-                            <span className='truncate'>{review.content}</span>
-                            <Link href={`/user/${review.userId}`}>{review.name}</Link>
-                            <span className='text-gray-400 min-w-[84px]'>{review.date}</span>
-                            <div>
-                              <span className='mr-2'>{review.likes}</span>
-                              <button name={review._id} onClick={(e) => handleLikes(e)}>
-                                👍
-                              </button>
+                          <div className='flex flex-col justify-between hover:text-orange-300 md:flex-row'>
+                            <div className='w-full flex md:w-[50%]'>
+                              <span className='w-[40%]'>
+                                {review.rate === '1'
+                                  ? '⭑⭒⭒⭒⭒'
+                                  : review.rate === '2'
+                                  ? '⭑⭑⭒⭒⭒'
+                                  : review.rate === '3'
+                                  ? '⭑⭑⭑⭒⭒'
+                                  : review.rate === '4'
+                                  ? '⭑⭑⭑⭑⭒'
+                                  : '⭑⭑⭑⭑⭑'}
+                              </span>
+                              <span className='truncate w-[60%]'>{review.content}</span>
+                            </div>
+                            <div className='w-full flex md:w-[50%]'>
+                              <Link
+                                href={`/user/${review.userId}`}
+                                className='w-[40%] truncate text-left md:text-center'
+                              >
+                                {review.name}
+                              </Link>
+                              <span className='text-gray-400 w-[40%] text-left md:text-center'>
+                                {review.date}
+                              </span>
+                              <div className='w-[20%] flex justify-end'>
+                                <span className='mr-2'>{review.likes}</span>
+                                <button name={review._id} onClick={(e) => handleLikes(e)}>
+                                  👍
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
