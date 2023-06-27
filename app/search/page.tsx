@@ -55,6 +55,28 @@ const Search = () => {
     return page;
   };
 
+  const changeCategory = (name: string) => {
+    if (name === '외국도서') {
+      return 'foreign';
+    } else {
+      return 'book';
+    }
+  };
+  const originalCategory = (name: string | null) => {
+    if (name === 'foreign') {
+      return '외국도서';
+    } else {
+      return '국내도서';
+    }
+  };
+  const originalQueryType = (name: string | null) => {
+    if (name === 'title') {
+      return '도서명';
+    } else {
+      return '저자';
+    }
+  };
+
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -77,9 +99,9 @@ const Search = () => {
   useEffect(() => {
     handleSearch();
   }, [queryObject]);
-
+  console.log(searchTarget);
   return (
-    <div>
+    <div className='flex flex-col items-center'>
       {openModal ? (
         <Modal
           onClose={() => {
@@ -88,65 +110,104 @@ const Search = () => {
           modalContent={`검색어를 입력해주세요.`}
         />
       ) : null}
+      <div className='flex-center w-full'>
+        <div className='flex-center w-2/3 h-32 mt-12 bg-gray-100 rounded-lg shadow-md p-2'>
+          <div className='flex flex-col w-32 h-full mr-2'>
+            <span
+              onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                const target = e.target as HTMLSpanElement;
+                setQueryType(target.id);
+              }}
+              id='title'
+              className={`h-1/2 flex-center ${
+                queryType === 'title' ? 'bg-orange-300 text-white' : null
+              } cursor-pointer duration-300 rounded-lg`}
+            >
+              도서명
+            </span>
+            <span
+              onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                const target = e.target as HTMLSpanElement;
+                setQueryType(target.id);
+              }}
+              id='author'
+              className={`h-1/2 flex-center ${
+                queryType === 'author' ? 'bg-orange-300 text-white' : null
+              } cursor-pointer duration-300 rounded-lg`}
+            >
+              저자
+            </span>
+          </div>
+          <div className='flex flex-col w-32 h-full mr-2'>
+            <span
+              onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                const target = e.target as HTMLSpanElement;
+                setSearchTarget(target.id);
+              }}
+              id='book'
+              className={`h-1/2 flex-center ${
+                searchTarget === 'book' ? 'bg-teal-500 text-white' : null
+              } cursor-pointer duration-300 rounded-lg`}
+            >
+              국내도서
+            </span>
+            <span
+              onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                const target = e.target as HTMLSpanElement;
+                setSearchTarget(target.id);
+              }}
+              id='foreign'
+              className={`h-1/2 flex-center ${
+                searchTarget === 'foreign' ? 'bg-teal-500 text-white' : null
+              } cursor-pointer duration-300 rounded-lg`}
+            >
+              해외도서
+            </span>
+          </div>
 
-      <select onChange={(e) => setQueryType(e.target.value)}>
-        <option value='title'>도서명</option>
-        <option value='author'>저자</option>
-      </select>
-
-      <input
-        onChange={(e) => setSearchTarget(e.target.value)}
-        name='category'
-        type='radio'
-        value='book'
-        id='book'
-        checked={searchTarget === 'book'}
-      />
-      <label htmlFor='book'>국내도서</label>
-
-      <input
-        onChange={(e) => setSearchTarget(e.target.value)}
-        name='category'
-        type='radio'
-        value='foreign'
-        id='foreign'
-        checked={searchTarget === 'foreign'}
-      />
-      <label htmlFor='foreign'>해외도서</label>
-
-      <input
-        type='text'
-        placeholder='도서 검색'
-        onChange={(e) => setSearchKeyword(e.target.value)}
-        onKeyUp={(e) => {
-          if (e.key === 'Enter') {
-            if (searchKeyword.length > 0) {
-              window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=book&start=1`;
-            } else {
-              setOpenModal(true);
-            }
-          }
-        }}
-      />
-      <button
-        onClick={() => {
-          if (searchKeyword.length > 0) {
-            window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=${searchTarget}&start=1`;
-          } else {
-            setOpenModal(true);
-          }
-        }}
-      >
-        검색
-      </button>
-      <div>{`${queryObject.searchKeyword}를(을) 검색한 결과입니다.`}</div>
+          <input
+            type='text'
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                if (searchKeyword.length > 0) {
+                  window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=${searchTarget}&start=1`;
+                } else {
+                  setOpenModal(true);
+                }
+              }
+            }}
+            className='w-1/3 h-1/2 p-3 border-2 border-orange-300 focus:outline-none mr-3 rounded-lg'
+          />
+          <button
+            onClick={() => {
+              if (searchKeyword.length > 0) {
+                window.location.href = `/search?searchKeyword=${searchKeyword}&queryType=${queryType}&searchTarget=${searchTarget}&start=1`;
+              } else {
+                setOpenModal(true);
+              }
+            }}
+            className='flex-center bg-orange-300 h-1/3 py-3 w-20  text-white rounded-lg hover:bg-orange-400 active:bg-orange-500'
+          >
+            검색
+          </button>
+        </div>
+      </div>
+      <div className='my-20 text-3xl ml-6'>{`${originalCategory(
+        queryObject.searchTarget
+      )}에서 ${originalQueryType(queryObject.queryType)} "${
+        queryObject.searchKeyword
+      }" 를(을) 검색한 결과입니다.`}</div>
 
       <div className='max-w-screen-2xl'>
         <ul className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
           {searchLists.map((list, i) => {
             return (
               <li key={i} className='flex flex-col p-6'>
-                <Link href={`/book/${list.isbn}`} prefetch={false}>
+                <Link
+                  href={`/book/${list.isbn}?searchTarget=${changeCategory(list.categoryName)}`}
+                  prefetch={false}
+                >
                   <img src={list.coverLargeUrl} />
                 </Link>
                 <div>{list.title}</div>
