@@ -79,14 +79,14 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
     return (
       <div className='flex justify-center w-full'>
         <div className='flex flex-col mt-6 max-w-screen-xl items-center mx-6 h-full w-full'>
-          <div className='flex w-full h-full'>
-            <div className='w-1/3 mr-6 flex-center flex-col'>
+          <div className='flex flex-col w-full h-full md:flex-row'>
+            <div className='w-full mr-6 flex-center flex-col md:w-1/3 md:h-1/3 md:mb-0 mb-10'>
               <img src={lists[0].coverLargeUrl} alt='book-cover' className='shadow-xl mb-3' />
               <span>{`${String(lists[0].pubDate).substring(0, 4)}. ${String(
                 lists[0].pubDate
               ).substring(4, 6)}. ${String(lists[0].pubDate).substring(6, 8)}. 출간`}</span>
             </div>
-            <div className='h-full w-2/3'>
+            <div className='h-2/3 w-full md:h-full md:w-2/3'>
               <div className='w-full flex flex-col items-start h-1/3 mb-3'>
                 <div className='text-gray-500'>{lists[0].categoryName}</div>
                 <div className='flex'>
@@ -111,8 +111,8 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
           </button>
           {reviewOpen ? (
             <div className='flex justify-center w-full items-center h-52 mt-6 '>
-              <div className='w-1/3 mr-6'></div>
-              <div className='w-2/3 h-full flex items-center bg-gray-100 p-6 rounded-lg'>
+              <div className='hidden w-1/3 mr-6 md:flex'></div>
+              <div className='w-full md:w-2/3 h-full flex-center bg-gray-100 p-6 rounded-lg'>
                 <select
                   name='별점'
                   onChange={(e) => {
@@ -146,7 +146,7 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
                     e.target.parentElement.children[1].value = '';
                     setContent('');
                   }}
-                  className=' bg-orange-300 text-white font-bold  rounded-lg px-6 py-3 hover:bg-orange-500 '
+                  className=' bg-orange-300 text-white font-bold rounded-lg py-3 w-16 hover:bg-orange-500 '
                 >
                   작성
                 </button>
@@ -155,8 +155,8 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
           ) : null}
 
           <div className='flex w-full'>
-            <div className='w-1/3 mr-6'></div>
-            <div className='w-2/3  px-5  bg-white rounded-lg mt-6 mb-6 py-10'>
+            <div className='w-1/3 mr-6 md:flex hidden'></div>
+            <div className='w-full md:w-2/3  px-5  bg-white rounded-lg mt-6 mb-6 py-10'>
               <div className='flex items-center justify-between mb-5 '>
                 <span className='text-3xl'>리뷰목록</span>
 
