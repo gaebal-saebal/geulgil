@@ -78,8 +78,11 @@ const Footer = () => {
 
           <div className='flex items-end justify-between w-4/5'>
             <div className='pl-3 text-xs'>
-              © 2023 Gaebal-Saebal
-              <Link href='https://github.com/gaebal-saebal/geulgil'>{` <https://github.com/gaebal-saebal>`}</Link>
+              {screenWidth > 768 ? '© 2023 Gaebal-Saebal' : null}
+
+              <Link href='https://github.com/gaebal-saebal/geulgil'>
+                {screenWidth > 768 ? `<https://github.com/gaebal-saebal>` : `© 2023 Gaebal-Saebal`}
+              </Link>
             </div>
             <div className='flex flex-col'>
               <Link
@@ -88,7 +91,7 @@ const Footer = () => {
                 className='text-sm hover:text-orange-400'
                 prefetch={false}
               >
-                문의상담
+                {screenWidth > 768 ? '문의상담' : '상담'}
               </Link>
               <Link
                 href='http://pf.kakao.com/_xexaxePxj/chat'
@@ -96,7 +99,7 @@ const Footer = () => {
                 className='text-sm hover:text-orange-400'
                 prefetch={false}
               >
-                광고문의
+                {screenWidth > 768 ? '광고문의' : '광고'}
               </Link>
             </div>
           </div>
