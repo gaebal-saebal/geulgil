@@ -104,7 +104,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
 
   return (
     <div className='flex justify-center'>
-      <div className='w-1/2 my-24 min-w-[640px]'>
+      <div className='w-1/2 my-24 max-w-[768px]'>
         {showChangeUserImgModal ? (
           <ChangeUserImgModal
             onClose={() => setShowChangeUserImgModal(false)}
@@ -146,7 +146,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
           {myInfo === undefined ? (
             <div>로딩중</div>
           ) : (
-            <div className='flex h-full px-2 py-10 bg-white rounded-lg shadow-xl'>
+            <div className='flex flex-col items-center h-full px-2 py-10 bg-white rounded-lg shadow-xl md:flex-row'>
               {id !== userId ? (
                 <Link href={myInfo.image} target='_blank' className='w-1/3 flex-center'>
                   <img className='rounded-[50%]' src={myInfo.image} alt={myInfo.name} />
@@ -166,22 +166,22 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                   <span className='text-4xl'>{myInfo.name}</span>
                   <div className='flex justify-between w-full'>
                     {openChangeNameWindow ? (
-                      <div className='p-5 bg-white border-2 border-orange-300 rounded-lg'>
+                      <div className='p-5 bg-white border-2 border-orange-300 rounded-lg shadow-lg'>
                         <div>닉네임 변경</div>
-                        <div className='flex'>
+                        <div className='flex flex-col w-full'>
                           <input
-                            className='w-1/2 pl-2 mr-5 border-2 border-orange-300 rounded-lg focus:outline-none'
+                            className='w-full pl-2 border-2 border-orange-300 rounded-lg focus:outline-none h-10 mb-2'
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                               setChangeName(e.target.value)
                             }
                             defaultValue={myInfo.name}
                           />
-                          <div className='flex w-1/2'>
+                          <div className='flex w-full'>
                             <button
-                              className='p-2 mr-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
+                              className='p-2 mr-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500 px-5 py-2'
                               onClick={patchUserName}
                             >
-                              수정하기
+                              수정
                             </button>
                             <button
                               className='px-5 py-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
@@ -204,7 +204,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                 {id === userId ? (
                   <>
                     {openChangePasswordWindow ? (
-                      <div className='p-5 bg-white border-2 border-orange-300 rounded-lg'>
+                      <div className='p-5 bg-white border-2 border-orange-300 rounded-lg shadow-lg'>
                         <div>비밀번호 변경</div>
                         <span className='relative w-full'>
                           <input
@@ -247,7 +247,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                       </div>
                     ) : id !== userId ? null : (
                       <button
-                        className='w-1/3 px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
+                        className='w-32 px-3 py-2 mr-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
                         onClick={() => setOpenChangePasswordWindow(true)}
                       >
                         비밀번호 변경
@@ -255,7 +255,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                     )}
 
                     <button
-                      className='w-1/3 px-3 py-2 mt-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
+                      className='w-32 px-3 py-2 mt-2 text-white bg-orange-300 rounded-md hover:bg-orange-500'
                       onClick={() => setShowConfirmModal(true)}
                     >
                       회원탈퇴
