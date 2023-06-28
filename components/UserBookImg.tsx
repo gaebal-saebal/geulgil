@@ -9,7 +9,25 @@ import { Navigation } from 'swiper';
 const UserBookImg = ({ lists }: { lists: UserBookImgType[] }) => {
   return (
     <div className='w-full max-w-screen-xl'>
-      <Swiper spaceBetween={15} modules={[Navigation]} navigation={true} slidesPerView={3}>
+      <Swiper
+        spaceBetween={15}
+        modules={[Navigation]}
+        navigation={true}
+        breakpoints={{
+          0: {
+            slidesPerView: 1,
+            slidesPerGroup: 1,
+          },
+          768: {
+            slidesPerView: 2,
+            slidesPerGroup: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+          },
+        }}
+      >
         {lists.map((list, i) => {
           return (
             <SwiperSlide key={i} className='flex flex-col items-center'>
