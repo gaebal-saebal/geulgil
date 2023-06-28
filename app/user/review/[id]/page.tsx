@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -7,6 +8,7 @@ const Review = (props: { params: { id: string } }) => {
   const [myReviewImgs, setMyReviewImgs] = useState<{ img: string; isbn: string }[]>([]);
 
   let userId = props.params.id;
+
   const GET_USER_REVIEW_URL = `/api/users/getUserReview?userId=${userId}`;
 
   const getMyReviewInfo = () => {
@@ -27,7 +29,6 @@ const Review = (props: { params: { id: string } }) => {
 
   return (
     <>
-      <div>유저 리뷰 리스트 페이지</div>
       <div className='flex flex-col items-center'>
         {myReviews.map((review, i) => {
           return (
