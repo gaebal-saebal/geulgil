@@ -170,7 +170,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                         <div>닉네임 변경</div>
                         <div className='flex flex-col w-full'>
                           <input
-                            className='w-full pl-2 border-2 border-orange-300 rounded-lg focus:outline-none h-10 mb-2'
+                            className='w-full h-10 pl-2 mb-2 border-2 border-orange-300 rounded-lg focus:outline-none'
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                               setChangeName(e.target.value)
                             }
@@ -178,7 +178,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                           />
                           <div className='flex w-full'>
                             <button
-                              className='p-2 mr-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500 px-5 py-2'
+                              className='p-2 px-5 py-2 mr-2 text-sm text-white bg-orange-300 rounded-lg hover:bg-orange-500'
                               onClick={patchUserName}
                             >
                               수정
@@ -216,13 +216,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                           />
                           <span
                             className='absolute bottom-0 cursor-pointer right-3'
-                            onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
-                              if (showPassword === true) {
-                                setShowPassword(false);
-                              } else {
-                                setShowPassword(true);
-                              }
-                            }}
+                            onClick={() => setShowPassword(!showPassword)}
                           >
                             {showPassword ? '🔒' : '👀'}
                           </span>
