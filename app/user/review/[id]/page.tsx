@@ -4,7 +4,9 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 const Review = (props: { params: { id: string } }) => {
-  const [myReviews, setMyReviews] = useState<{ content: string; isbn: string; date: string }[]>([]);
+  const [myReviews, setMyReviews] = useState<
+    { content: string; isbn: string; date: string; categoryName: string }[]
+  >([]);
   const [myReviewImgs, setMyReviewImgs] = useState<{ img: string; isbn: string }[]>([]);
 
   let userId = props.params.id;
@@ -35,7 +37,7 @@ const Review = (props: { params: { id: string } }) => {
             <Link
               className='flex w-3/4 p-3 my-2 hover:bg-gray-100'
               key={i}
-              href={`/book/${review.isbn}`}
+              href={`/book/${review.isbn}?searchTarget=${review.categoryName}`}
             >
               <img
                 className='object-contain w-1/4 mr-4 rounded-xl'
