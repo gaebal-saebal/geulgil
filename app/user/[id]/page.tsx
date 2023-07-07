@@ -144,7 +144,12 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
           />
         ) : null}
         {showConfirmModal ? (
-          <ConfirmModal onClose={() => setShowConfirmModal(false)} onClick={deleteUserInfo} />
+          <ConfirmModal
+            onClose={() => setShowConfirmModal(false)}
+            onClick={deleteUserInfo}
+            upperMsg='정말 탈퇴하시겠습니까?'
+            lowerMsg='작성한 모든 데이터가 삭제됩니다.'
+          />
         ) : null}
 
         <div className='flex flex-col'>

@@ -3,4 +3,6 @@ export type ModalProps = {
   onClick?: () => void;
   onClose: () => void;
   modalContent?: string;
+  upperMsg?: string;
+  lowerMsg?: string;
 };
