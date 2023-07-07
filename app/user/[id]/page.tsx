@@ -10,7 +10,10 @@ import { signOut } from 'next-auth/react';
 import UserBookImg from '@/components/UserBookImg';
 
 const User = (props: { params: { id: string }; searchParams: {} }) => {
-  const [myReviews, setMyReviews] = useState<{ content: string; isbn: string; date: string }[]>([]);
+  const [myReviews, setMyReviews] = useState<
+    { content: string; isbn: string; date: string; categoryName: string }[]
+  >([]);
+  console.log(myReviews);
   const [myReviewImgs, setMyReviewImgs] = useState<
     { img: string; isbn: string; categoryName: string }[]
   >([]);
@@ -286,7 +289,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                     <Link
                       className='my-1 border-b-2 border-orange-200'
                       key={i}
-                      href={`/book/${review.isbn}`}
+                      href={`/book/${review.isbn}?searchTarget=${review.categoryName}`}
                     >
                       <div className='flex justify-between hover:text-orange-300'>
                         <span className='truncate'>{review.content}</span>

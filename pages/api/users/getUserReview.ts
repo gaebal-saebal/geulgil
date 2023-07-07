@@ -23,7 +23,7 @@ export default async function getAPI(req: NextApiRequest, res: NextApiResponse) 
 
     let myReviewImg: { img: string; isbn: string; categoryName: string }[] = [];
     await Promise.all(
-      userReviews.map(async (review: { content: string; isbn: string }) => {
+      userReviews.map(async (review: { content: string; isbn: string }, i: number) => {
         const URL = `http://book.interpark.com/api/search.api?key=${process.env.NEXT_PUBLIC_API_KEY}&query=${review.isbn}&queryType=isbn&output=json`;
         await fetch(URL)
           .then((res) => res.json())
@@ -33,6 +33,7 @@ export default async function getAPI(req: NextApiRequest, res: NextApiResponse) 
               isbn: review.isbn,
               categoryName: category(data.item[0].categoryName),
             });
+            userReviews[i].categoryName = category(data.item[0].categoryName);
           });
       })
     );
