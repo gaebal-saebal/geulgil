@@ -11,7 +11,9 @@ import UserBookImg from '@/components/UserBookImg';
 
 const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [myReviews, setMyReviews] = useState<{ content: string; isbn: string; date: string }[]>([]);
-  const [myReviewImgs, setMyReviewImgs] = useState<{ img: string; isbn: string }[]>([]);
+  const [myReviewImgs, setMyReviewImgs] = useState<
+    { img: string; isbn: string; categoryName: string }[]
+  >([]);
   const [myInfo, setMyInfo] = useState<{ name: string; email: string; image: string }>();
 
   const [showChangeUserImgModal, setShowChangeUserImgModal] = useState(false);
