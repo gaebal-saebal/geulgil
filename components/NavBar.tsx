@@ -168,9 +168,11 @@ const NavBar = () => {
                     </>
                   ) : null}
                 </Link>
-                <button className='ml-5 text-gray-200' onClick={handleLogout}>
-                  로그아웃
-                </button>
+                {myInfo !== undefined ? (
+                  <button className='ml-5 text-gray-200' onClick={handleLogout}>
+                    로그아웃
+                  </button>
+                ) : null}
               </>
             )}
           </div>
