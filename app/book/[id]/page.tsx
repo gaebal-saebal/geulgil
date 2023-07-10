@@ -16,6 +16,8 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [deleteReviewId, setDeleteReviewId] = useState('');
 
+  const [chatAble, setChatAble] = useState(false);
+
   const isbn = props.params.id;
   const searchTarget = props.searchParams.searchTarget;
   const { id } = sessionState();
@@ -84,10 +86,25 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
     else signIn();
   };
 
+  const isChatAbled = () => {
+    for (let i = 0; i < reviews.length; i++) {
+      if (reviews[i].userId === id) {
+        setChatAble(true);
+        return;
+      }
+    }
+    // 리뷰가 삭제되었을 때의 경우도 체크(삭제 -> reviews변경)
+    setChatAble(false);
+  };
+
   useEffect(() => {
     getBookDetails();
     getReviews();
   }, []);
+
+  useEffect(() => {
+    isChatAbled();
+  }, [reviews]);
 
   if (lists.length > 0) {
     return (
@@ -176,6 +193,21 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
                 </div>
               </div>
             ) : null}
+            {chatAble ? (
+              <Link
+                href={`/book/chat/${isbn}`}
+                className='px-6 py-3 mt-10 text-lg text-white bg-orange-300 rounded-lg hover:bg-orange-500'
+              >
+                채팅하기
+              </Link>
+            ) : (
+              <>
+                <button className='px-6 py-3 mt-10 text-lg text-white bg-gray-300 rounded-lg cursor-not-allowed'>
+                  채팅하기
+                </button>
+                <span className='text-red-400'>⚠︎리뷰를 작성하면 채팅을 할 수 있어요</span>
+              </>
+            )}
 
             <div className='flex w-full'>
               <div className='hidden w-1/3 mr-6 md:flex'></div>
