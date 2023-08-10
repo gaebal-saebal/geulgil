@@ -221,6 +221,7 @@ const Search = () => {
           })}
         </ul>
       </div>
+      {/* pagination */}
       <div className='flex flex-wrap justify-center w-full max-w-screen-xl mb-10'>
         {queryObject.start !== '1' ? (
           <span
