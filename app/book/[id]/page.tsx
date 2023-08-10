@@ -24,6 +24,7 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
 
   const GET_REVIEW_URL = `/api/books/getReviews?isbn=${isbn}`;
   const GET_BOOK_INFO_URL = `/api/books/getBookDetails?searchTarget=${searchTarget}&isbn=${isbn}`;
+  const POST_REVIEW_URL = '/api/reviews/createReview';
   const POST_REVIEW_LIKE_URL = `/api/reviews/likeReview`;
   const DELETE_REVIEW_URL = `/api/reviews/deleteReview?reviewId=`;
 
@@ -56,6 +57,19 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
       .then((data) => {
         setLists(data.item);
       });
+  };
+
+  const createReview = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    await fetch(POST_REVIEW_URL, {
+      method: 'POST',
+      body: JSON.stringify({ rate, content, isbn }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+    getReviews();
+    //@ts-ignore
+    e.target.parentElement.children[1].value = '';
+    setContent('');
   };
 
   const handleReviewDelete = (reviewId: string) => {
@@ -174,18 +188,7 @@ const Book = (props: { params: { id: string }; searchParams: { searchTarget: str
                   />
 
                   <button
-                    onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
-                      await fetch('/api/reviews/createReview', {
-                        method: 'POST',
-                        body: JSON.stringify({ rate, content, isbn }),
-                      })
-                        .then((res) => res.json())
-                        .then((data) => console.log(data));
-                      getReviews();
-                      //@ts-ignore
-                      e.target.parentElement.children[1].value = '';
-                      setContent('');
-                    }}
+                    onClick={(e) => createReview(e)}
                     className='w-16 py-3 font-bold text-white bg-orange-300 rounded-lg hover:bg-orange-500'
                   >
                     작성
