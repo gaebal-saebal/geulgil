@@ -50,6 +50,7 @@ const BookList = ({ lists }: { lists: BookListOnMainType[] }) => {
               <Link
                 href={`/book/${list.isbn}?searchTarget=${changeCategory(list.categoryName)}`}
                 className='h-[300px] flex items-center'
+                prefetch={false}
               >
                 <div className='relative'>
                   <img src={list.coverLargeUrl} className='shadow-lg' />
