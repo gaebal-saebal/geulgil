@@ -6,14 +6,13 @@ import { sessionState } from '@/store/store';
 import ChangeUserImgModal from '@/components/ChangeUserImgModal';
 import Modal from '@/components/Modal';
 import ConfirmModal from '@/components/ConfirmModal';
-import { signOut } from 'next-auth/react';
 import UserBookImg from '@/components/UserBookImg';
+import { signOut } from 'next-auth/react';
 
 const User = (props: { params: { id: string }; searchParams: {} }) => {
   const [myReviews, setMyReviews] = useState<
     { content: string; isbn: string; date: string; categoryName: string }[]
   >([]);
-  console.log(myReviews);
   const [myReviewImgs, setMyReviewImgs] = useState<
     { img: string; isbn: string; categoryName: string }[]
   >([]);
@@ -81,6 +80,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
       .then((res) => setShowChangeUserNameModal(true))
       .catch((err) => console.log(err));
   };
+
   const patchUserPassword = () => {
     if (changePassword.length >= 6) {
       fetch(PATCH_USER_PASSWORD_URL, {
@@ -162,9 +162,8 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                   <img className='rounded-[50%]' src={myInfo.image} alt={myInfo.name} />
                 </Link>
               ) : (
-                <div className='w-1/3 flex-center'>
+                <div className='w-1/3 rounded-[50%] border-8 border-black flex-center cursor-pointer'>
                   <img
-                    className='rounded-[50%]'
                     src={myInfo.image}
                     alt={myInfo.name}
                     onClick={() => setShowChangeUserImgModal(true)}
@@ -203,9 +202,7 @@ const User = (props: { params: { id: string }; searchParams: {} }) => {
                         </div>
                       </div>
                     ) : id !== userId ? null : (
-                      <button className='' onClick={() => setOpenChangeNameWindow(true)}>
-                        ✏️
-                      </button>
+                      <button onClick={() => setOpenChangeNameWindow(true)}>✏️</button>
                     )}
                   </div>
                 </div>
