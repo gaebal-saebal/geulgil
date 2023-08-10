@@ -5,8 +5,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { ObjectId } from 'mongodb';
 
-//TODO: 작성한 리뷰 찾아서 book-review의 name들을 바뀐 닉네임으로 변경
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   let db = (await connectDB).db('auth');
   let bookDb = (await connectDB).db('book');
@@ -46,7 +44,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           );
       }
       for (let i = 0; i < userAllReview.length; i++) {
-        console.log(userAllReview[i]);
         let id = new ObjectId(userAllReview[i]._id);
         let idStr = id.toString();
 
